@@ -1,0 +1,37 @@
+# Default-deny: only reviewed public application files may enter Git.
+*
+!/.gitignore
+!/.gitattributes
+!/README.md
+!/package.json
+!/index.html
+!/styles.css
+!/server.mjs
+!/core.test.js
+!/ui-check.mjs
+!/src/
+!/src/*.js
+!/src/*.d.ts
+!/docs/
+!/docs/*.md
+!/screenshots/
+!/screenshots/*.png
+# Hard exclusions, including future accidental nested archives.
+**/04_PRIVATE/**
+**/01_RAW/**
+**/02_MEMORY/**
+**/03_PROFILE/**
+**/05_STRUCTURED/**
+**/06_DATABASE/**
+**/07_EXPORT/**
+**/08_BACKUP/**
+**/11_LOGS/**
+**/.env*
+**/*.[dD][bB]
+**/*.sqlite*
+**/*[Vv][Aa][Uu][Ll][Tt]*/**
+**/*[Ss][Ee][Aa][Ll][Ee][Dd]*/**
+**/*.pem
+**/*.key
+**/MC_FRAGMENT_*
+**/node_modules/**

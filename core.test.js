@@ -1,0 +1,7 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {DemoCore,fragmentFilename,fragmentMarkdown} from './src/core.js';
+test('unsupported or biographical questions never invent memories',async()=>{const c=new DemoCore();for(const q of ['Where was I born?','learning about my childhood','How do you learn? Where was I born?','我出生在哪里？']){const r=await c.chat(q);assert.equal(r.memories.length,0);assert.match(r.answer,/No reliable memory found/);assert.equal(r.confidence,null);}});
+test('supported demo answer retains synthetic provenance',async()=>{const r=await new DemoCore().chat('How do you learn?');assert.equal(r.memories[0].demo,true);assert.equal(r.source,'DEMO-S001');assert.equal(r.confidence,null);});
+test('fragment preserves raw answer without turning it into persona claims',async()=>{const original=[{question:'Why?',answer:'<script>test</script> 原始回答'}];const f=await new DemoCore().generateFragment(original);original[0].answer='changed';assert.equal(f.raw_answers[0].answer,'<script>test</script> 原始回答');assert.equal(f.privacy_level,'PRIVATE');assert.deepEqual(f.personality_evidence,[]);assert.match(fragmentMarkdown(f),/原始回答/);assert.equal(fragmentFilename('2026-10-12','json'),'MC_FRAGMENT_20261012_F0001.json');});
+test('dashboard counts represent no connected archive',async()=>{assert.ok(Object.values(await new DemoCore().getProgress()).every(n=>n===0));});
