@@ -52,6 +52,3 @@ assert.ok((await page.locator('.fragment pre').innerText()).includes('<img src=x
 assert.deepEqual(errors,[]);
 await browser.close();
 console.log('PASS: desktop/mobile routes, chat evidence/no-record, five-question interview, JSON download, input escaping; no browser errors.');
-
-
-
