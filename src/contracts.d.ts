@@ -25,6 +25,9 @@ export interface MemoryFragment {
 }
 /** Same port serves Clone Builder capture and My Clone evidence read. */
 export interface MindCloneCore {
+  importFragment(file: {name:string; content:string}): Promise<{entry:ImportedFragment; duplicate:boolean}>;
+  listFragments(): Promise<ImportedFragment[]>;
+  getWorkspaceSummary(): Promise<WorkspaceTotals>;
   chat(query: string): Promise<CloneReply>;
   nextQuestion(answers: RawAnswer[]): Promise<string | null>;
   generateFragment(answers: RawAnswer[]): Promise<MemoryFragment>;
@@ -42,4 +45,21 @@ export interface AccessPolicy {
   authorize(session: AuthSession | null, operation: 'read'|'write', record: {
     owner: string; privacy_level: PrivacyLevel;
   }): Promise<boolean>;
+}
+
+/** Session-only staging. Raw content is never returned by the list API. */
+export interface ImportedFragment {
+  id: string; name: string; source_id: string | null; kind: 'generated' | 'imported';
+  format: 'md' | 'json'; imported_at: string; size: number;
+  status: 'UNREVIEWED'; privacy_level: 'PRIVATE';
+}
+export interface WorkspaceTotals {
+  sessions: number; fragments: number; imports: number; memories: number;
+  values: number; reasoning: number; personality: number; language: number;
+}
+/** Future ingestion stages require explicit review before any authorized database write. */
+export interface FragmentIngestPort {
+  stage(file: {name:string; content:string}): Promise<ImportedFragment>;
+  review(id:string): Promise<{status:'UNREVIEWED'|'APPROVED'|'REJECTED'}>;
+  persistApproved(id:string, session:AuthSession): Promise<void>;
 }

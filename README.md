@@ -7,7 +7,7 @@
 
 **Local-first · Cloud-assisted · Model-independent**
 
-> Private Research Prototype · v0.3 · Local execution only
+> Private Research Prototype · v0.4 · Local execution only
 
 ![Digital Brain overview](screenshots/overview-desktop.png)
 
@@ -34,14 +34,14 @@ Try the supported fictional learning question in any language. Its Memory + Reas
 ## Clone Builder
 Start Interview → scripted AI question → original answer → follow-up → End Session → Generate Memory Fragment.
 
-The neural mesh grows as questions are answered. The percentage measures **Demo capture completion**, not personality completeness. For exact fictional sample answers, illustrative counts accumulate by source question. A complete five-question sample yields a Demo specimen with Memory 2, Values 3, Reasoning 2, Personality 4, and Language 3. Every candidate has a source answer, evidence kind, null confidence, and unconfirmed review status.
-
-Free-text answers—including a modified sample—are preserved exactly and **are not automatically analyzed**. Their extraction counts remain zero, and export privacy defaults PRIVATE. Both flows leave real archive statistics at zero.
+Captured answers, generated sessions and fragments accumulate as counts. There is no percentage, completion bar or lifetime target. Exact fictional samples still provide illustrative source-based counts; arbitrary answers remain raw and unconfirmed. Verified archive counts remain zero.
 
 ## Digital Brain UI
-A lightweight SVG/CSS neural brain, glass layers, fine lines, subtle cyan lighting and restrained motion. Six regions support hover highlighting, click selection and keyboard selection (Tab + Enter or Space). Region panels are available from Overview and My Clone. No external fonts, images, 3D library, WebGL context or particle simulation.
+All three pages use the same abstract lateral/cross-section brain model: original silhouette, triangulated points, edges and translucent faces. Canvas 2D projects a real XYZ mesh with perspective and depth ordering; SVG draws one restrained folded connector to the selected or hovered left-side module. No Three.js, WebGL, downloaded image or external model is required.
 
-Desktop pointer movement adds slight parallax. Mobile and coarse pointers disable parallax, hide secondary nodes/edges, and use slower motion. System `prefers-reduced-motion` and the Settings switch disable animation. Pointer updates are capped to one per animation frame; there is no continuous JavaScript render loop.
+Memory, Personality, Values, Reasoning, Language and Emotion are a single vertical column on the left. Click either a module or the brain surface to select; no region detail, record page or navigation is created. Keyboard buttons and the focused canvas arrow keys provide selection.
+
+The model rotates slowly around its Y axis. Hover over the brain pauses rotation; leaving resumes at the current angle. Reduced-motion preferences stop rotation while preserving interaction. Mobile uses a smaller mesh, DPR capped at 1 and lower frame frequency; desktop DPR is capped at 1.5. Offscreen and hidden-tab animation stops, and renderer resources are cleaned up when routes change. Fonts use a shared system sans-serif stack; raw file previews retain a readable code font.
 
 ## Three languages
 中文 / English / 日本語 switch instantly without reloading. All core UI copy, questions, sample answers, empty states, privacy text and Markdown headings live in:
@@ -63,6 +63,13 @@ MC_FRAGMENT_YYYYMMDD_F0001.json
 ```
 
 F0001 and MF-000001 are **demo identifiers**, not production allocation. They do not replace existing v0.1 archive entity IDs. Downloads may share a suggested filename; production requires transactional unique IDs, schema validation, privacy review and an explicit import. Nothing is written to the Master Archive.
+
+## Upload Memory Fragment
+Clone Builder includes a local file picker for `.md` and `.json` fragments. Export either format, then re-import it to the current workspace. Imported files appear in Fragment List and Persona Progress, with local timestamp, source ID when available, and Pending review status.
+
+No file is uploaded to a server, saved into Git, written to the Master Archive or persisted in browser storage. Refresh clears the local session. Markdown stays raw; JSON receives only basic syntax/object validation. Imported claims never contribute to verified memory/persona counts or chat retrieval. Limits: 2 MB per file, 20 staged entries and 6 MB of imported text per session. Exact duplicates are not added twice.
+
+The Core import/list/totals interfaces and future FragmentIngestPort reserve validation, review and authorized persistence. Real parsing and database writes remain future work. Only fictional round-trip fixtures are used in screenshots.
 
 ## Architecture
 ```text
@@ -91,9 +98,9 @@ Both interfaces share DemoCore. Typed contracts reserve SQLite/PostgreSQL reposi
 
 ## Current progress
 - [x] Existing public repository changed to Private and owner-only access audited.
-- [x] Minimal Futuristic dark interface, Digital Brain and Explore Mind panels.
+- [x] Minimal Futuristic dark interface, Digital Brain and left-side region selection.
 - [x] Evidence-aware conversation and restrained synthetic-source feedback.
-- [x] Progressive interview mesh, honest capture progress and memory capsule.
+- [x] Progressive interview mesh, honest capture cumulative records and memory capsule.
 - [x] Exact fictional specimen extraction; arbitrary input remains unconfirmed raw capture.
 - [x] Three-language UI, browser locale detection and preference persistence.
 - [x] Keyboard region controls and reduced-motion support.
@@ -145,4 +152,4 @@ The owner can use **Repository → Settings → Collaborators → Add people**. 
 [GitHub invitation documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository) · [personal repository permissions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository).
 
 ## Presentation walkthrough
-Overview → select a brain region → switch language → My Clone → learning sample → unsupported life question → Clone Builder → fictional answers → End Session → Generate Memory Fragment → inspect and export → Persona Progress. Real records remain at zero throughout.
+Overview → select a brain region without navigation → switch language → My Clone → learning sample → unsupported life question → Clone Builder → fictional answers → End Session → Generate Memory Fragment → inspect and export → Persona Progress. Real records remain at zero throughout.

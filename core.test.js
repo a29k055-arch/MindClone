@@ -56,3 +56,29 @@ test('dashboard counts only represent the disconnected real archive',async()=>{
   const core=new DemoCore();await core.generateFragment(examples('en'));
   assert.ok(Object.values(await core.getProgress()).every(n=>n===0));
 });
+
+test('local imports preserve bytes, stay PRIVATE and exclude raw content from lists',async()=>{
+  const core=new DemoCore();const content='  # Memory\n原始文本  ';
+  const result=await core.importFragment({name:'MC_FRAGMENT_20261013_F0002.md',content});
+  assert.equal(result.entry.privacy_level,'PRIVATE');assert.equal(result.entry.status,'UNREVIEWED');
+  assert.equal(core.fragments[0].content,content);
+  assert.ok(!Object.hasOwn((await core.listFragments())[0],'content'));
+  assert.equal((await core.getWorkspaceSummary()).imports,1);
+  assert.ok(Object.values(await core.getProgress()).every(n=>n===0));
+  const duplicate=await core.importFragment({name:'MC_FRAGMENT_20261013_F0002.md',content});
+  assert.equal(duplicate.duplicate,true);assert.equal((await core.listFragments()).length,1);
+});
+test('JSON imports only validate basic structure and never trust claimed evidence counts',async()=>{
+  const core=new DemoCore();await core.importFragment({name:'fragment.json',content:JSON.stringify({fragment_id:'X',values:Array(100).fill('unverified')})});
+  assert.equal((await core.getWorkspaceSummary()).values,0);
+  for(const input of [{name:'x.txt',content:'text'},{name:'x.json',content:'{'},{name:'x.json',content:'[]'},{name:'x.md',content:''},{name:'x.md',content:'x'.repeat(2*1024*1024+1)}]) {
+    await assert.rejects(core.importFragment(input),/upload\./);
+  }
+  assert.equal((await core.listFragments()).length,1);
+});
+test('local generated and imported totals accumulate without changing verified archive metrics',async()=>{
+  const core=new DemoCore();await core.generateFragment(examples('en'));await core.generateFragment(examples('zh'));
+  await core.importFragment({name:'file.md',content:'Fictional fixture'});
+  const summary=await core.getWorkspaceSummary();assert.equal(summary.sessions,2);assert.equal(summary.fragments,3);assert.equal(summary.imports,1);assert.equal(summary.values,6);
+  assert.ok(Object.values(await core.getProgress()).every(n=>n===0));
+});

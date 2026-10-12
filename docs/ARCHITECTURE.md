@@ -1,4 +1,4 @@
-# Architecture & integration boundaries — v0.3
+# Architecture & integration boundaries — v0.4
 
 The existing Web module is iterated in place; the Master Archive is unchanged. No database migration, root mapping, indexing or real-data import is performed.
 
@@ -7,14 +7,14 @@ Clone Builder captures original questions and answers through MindClone Core. My
 
 Modules:
 - `src/app.js`: five routes, conversation, capture, fragment state and locale switching. Untrusted input is escaped before HTML insertion.
-- `src/brain.js`: bounded deterministic SVG mesh, six region controls, local hover/focus illumination, requestAnimationFrame-throttled pointer parallax and short evidence pulse. No WebGL or continuous JS render loop.
+- `src/brain.js`: bounded XYZ lateral brain mesh projected through Canvas 2D, six left-side controls, ray-near-node hit testing, one SVG connector, pause-on-hover rotation and reduced-motion handling. Capped frame frequency/DPR, smaller mobile mesh, offscreen/tab suspension and route cleanup. No WebGL or third-party 3D library.
 - `src/i18n.js` and `locales/*.json`: all core UI copy, browser detection and optional language preference persistence.
 - `src/sample-data.js`: known fictional interview specimens. Only exact matching full specimens generate illustrative candidates.
 - `src/core.js`: shared demo adapter; free text remains unconfirmed raw capture, real archive progress remains zero.
 - `src/contracts.d.ts`: evidence, fragment, region, locale and Core contracts; future AuthPort and AccessPolicy.
 - `server.mjs`: fixed static asset allowlist, local bind and CSP. Same-origin JSON language imports are allowed; there are no API write endpoints.
 
-The neural percentage is answered-question completion, never persona accuracy. Synthetic candidate counts use source-answer indexes. Brain highlighting depicts fixture source metadata, not a genuine retrieval pipeline. No anatomical accuracy is claimed.
+All progress is expressed as cumulative counts. No percentage or completion ceiling is displayed. Synthetic candidate counts use source-answer indexes. Brain highlighting depicts fixture source metadata, not a genuine retrieval pipeline. No anatomical accuracy is claimed.
 
 ## Auth and deployment
 Repository visibility is Private. Its collaborator membership controls repository access only. The local app has no authentication, tokens, fake login gate or deployment. GitHub Pages is not configured and is not assumed to restrict website visitors by repository membership.
@@ -37,3 +37,8 @@ The module retains its own Git root under 09_CODE/web. The future local service 
 This private code repository contains code, docs, translations and synthetic screenshots. Real persona, identity, interviews, SQLite and Vault remain in a separate protected data layer. Private Git is not a Vault. Git's default-deny allowlist remains active, excluding exported fragments and secrets.
 
 Page memory holds demo input only. Refresh clears it; hash navigation and language changes preserve it for the current session. localStorage holds language preference only, never interviews. Reduce-motion choice is session-only and system preferences are always respected.
+
+## Local fragment staging — v0.4
+DemoCore importFragment accepts filename and original text in page memory only. MD is preserved; JSON syntax and root-object shape are checked without trusting evidence arrays. Every imported entry is PRIVATE/UNREVIEWED, even if the file claims PUBLIC or approved evidence. listFragments omits raw content. The UI lists escaped filenames and source IDs, never renders imported HTML or Markdown. Exact file/text duplicates are not re-added. Per-file and session limits bound memory use.
+
+getWorkspaceSummary distinguishes locally generated sessions/fragments/imports and fictional Demo candidate counts from getProgress's zero verified archive metrics. Language changes and hash routes preserve session state; refresh clears it. No upload POST endpoint exists. FragmentIngestPort reserves staging, review and authenticated persistence; it is not implemented. No archive/database/root mapping or other project is changed.
