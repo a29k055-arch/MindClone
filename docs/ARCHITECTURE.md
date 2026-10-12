@@ -1,4 +1,4 @@
-# Architecture & integration boundaries — v0.4
+# Architecture & integration boundaries — v0.5
 
 The existing Web module is iterated in place; the Master Archive is unchanged. No database migration, root mapping, indexing or real-data import is performed.
 
@@ -7,21 +7,20 @@ Clone Builder captures original questions and answers through MindClone Core. My
 
 Modules:
 - `src/app.js`: five routes, conversation, capture, fragment state and locale switching. Untrusted input is escaped before HTML insertion.
-- `src/brain.js`: bounded XYZ lateral brain mesh projected through Canvas 2D, six left-side controls, ray-near-node hit testing, one SVG connector, pause-on-hover rotation and reduced-motion handling. Capped frame frequency/DPR, smaller mobile mesh, offscreen/tab suspension and route cleanup. No WebGL or third-party 3D library.
 - `src/i18n.js` and `locales/*.json`: all core UI copy, browser detection and optional language preference persistence.
 - `src/sample-data.js`: known fictional interview specimens. Only exact matching full specimens generate illustrative candidates.
 - `src/core.js`: shared demo adapter; free text remains unconfirmed raw capture, real archive progress remains zero.
 - `src/contracts.d.ts`: evidence, fragment, region, locale and Core contracts; future AuthPort and AccessPolicy.
 - `server.mjs`: fixed static asset allowlist, local bind and CSP. Same-origin JSON language imports are allowed; there are no API write endpoints.
 
-All progress is expressed as cumulative counts. No percentage or completion ceiling is displayed. Synthetic candidate counts use source-answer indexes. Brain highlighting depicts fixture source metadata, not a genuine retrieval pipeline. No anatomical accuracy is claimed.
+All progress is expressed as cumulative counts. No percentage or completion ceiling is displayed. Synthetic candidate counts use source-answer indexes. Brain highlighting represents conceptual domain selection, not a genuine retrieval pipeline. No anatomical accuracy is claimed.
 
 ## Auth and deployment
-Repository visibility is Private. Its collaborator membership controls repository access only. The local app has no authentication, tokens, fake login gate or deployment. GitHub Pages is not configured and is not assumed to restrict website visitors by repository membership.
+Repository and static demo are Public. No private data service is connected. GitHub Pages serves reviewed runtime files; a separate authenticated service is required before connecting real personas.
 
 A future authenticated API adapter replaces DemoCore. Suggested endpoint boundaries: POST /v1/clone/replies; POST /v1/interviews; POST /v1/interviews/:id/answers; POST /v1/interviews/:id/close; POST /v1/fragments/:id/review; GET /v1/persona/progress. These endpoints do not run yet.
 
-Deploy only after choosing an authentication-capable hosting/access layer. Authenticate identity server-side, authorize each operation and record by owner/privacy/consent, and protect both frontend access and the Memory API. Reject missing/expired sessions before any retrieval or write. Do not embed provider keys, databases or private records in static assets. A UI badge or browser state never establishes security.
+Deploy real private data only after choosing an authentication-capable hosting/access layer. Authenticate identity server-side, authorize each operation and record by owner/privacy/consent, and protect both frontend access and the Memory API. Reject missing/expired sessions before any retrieval or write. Do not embed provider keys, databases or private records in static assets. A UI badge or browser state never establishes security.
 
 Core services remain: InterviewService, FragmentReviewService, MemoryRepository, EvidenceRetriever, LLMRouter, AccessPolicy and transactional IdAllocator. SQLite first; PostgreSQL/vector index later. Filter privacy and ownership before retrieval. SEALED excludes AI access; Vault requires separate protected access and encryption. Model calls need authorization for the minimal selected records.
 
@@ -34,7 +33,7 @@ Fragment interchange naming remains MC_FRAGMENT_YYYYMMDD_F####.md/.json. Demo F0
 The module retains its own Git root under 09_CODE/web. The future local service resolves MINDCLONE_ROOT from the authoritative mapping and validates relative POSIX paths within it. No browser-provided filesystem path is trusted. Moving the archive follows the existing migration protocol. This release does not change archive system status or path mappings.
 
 ## Data boundary
-This private code repository contains code, docs, translations and synthetic screenshots. Real persona, identity, interviews, SQLite and Vault remain in a separate protected data layer. Private Git is not a Vault. Git's default-deny allowlist remains active, excluding exported fragments and secrets.
+This public code repository contains code, docs, translations and synthetic screenshots. Real persona, identity, interviews, SQLite and Vault remain in a separate protected data layer. Private Git is not a Vault. Git's default-deny allowlist remains active, excluding exported fragments and secrets.
 
 Page memory holds demo input only. Refresh clears it; hash navigation and language changes preserve it for the current session. localStorage holds language preference only, never interviews. Reduce-motion choice is session-only and system preferences are always respected.
 
@@ -42,3 +41,7 @@ Page memory holds demo input only. Refresh clears it; hash navigation and langua
 DemoCore importFragment accepts filename and original text in page memory only. MD is preserved; JSON syntax and root-object shape are checked without trusting evidence arrays. Every imported entry is PRIVATE/UNREVIEWED, even if the file claims PUBLIC or approved evidence. listFragments omits raw content. The UI lists escaped filenames and source IDs, never renders imported HTML or Markdown. Exact file/text duplicates are not re-added. Per-file and session limits bound memory use.
 
 getWorkspaceSummary distinguishes locally generated sessions/fragments/imports and fictional Demo candidate counts from getProgress's zero verified archive metrics. Language changes and hash routes preserve session state; refresh clears it. No upload POST endpoint exists. FragmentIngestPort reserves staging, review and authenticated persistence; it is not implemented. No archive/database/root mapping or other project is changed.
+
+
+## Volumetric brain — v0.5
+Original implicit volume → marching tetrahedra → welded closed indexed mesh → Three.js Mesh / LineSegments / Points. Desktop 1462 vertices / 2920 faces; mobile 968 / 1932. Lazy runtime import, DPR clamp and reduced-motion/offscreen cleanup. hoveredDomain and selectedDomain remain separate; only selection changes point shader attributes. Raycasting picks actual mesh faces, while a projected domain centroid controls the single SVG connector.

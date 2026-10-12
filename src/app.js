@@ -5,7 +5,7 @@ import { regions, brainMarkup, connectBrain } from './brain.js';
 const app = document.querySelector('#app');
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let language = initialLanguage();
-let region = 'memory';
+let region = null;
 let reduceMotion = false;
 let answers = [];
 let active = false;
@@ -38,7 +38,7 @@ function shell() {
   document.title = `MindClone · ${text('nav.'+route())}`;
   document.querySelector('#sidebar').innerHTML = `
     <a class="brand" href="#home"><span class="logo">m<span>c</span></span><strong>MindClone<small>${t('brand.subtitle')}</small></strong></a>
-    <div class="workspace-label">${t('shell.workspace')}<span>v0.4</span></div>
+    <div class="workspace-label">${t('shell.workspace')}<span>v0.5</span></div>
     <nav aria-label="${t('shell.workspace')}">${['home','clone','builder','dashboard','settings'].map((page,i)=>`<a href="#${page}" data-page="${page}" class="${route()===page?'active':''}" ${route()===page?'aria-current="page"':''}><span class="nav-symbol" aria-hidden="true">${['⌂','◉','◇','▥','⚙'][i]}</span><span>${t('nav.'+page)}</span></a>`).join('')}</nav>
     <div class="sidebar-bottom"><div class="local-dot">${t('shell.local')}</div><p>${t('shell.disconnected')}</p><div class="profile"><span class="avatar">M</span><div>MindClone<small>${t('shell.private')}</small></div></div></div>`;
   document.querySelector('#header').innerHTML = `<span class="breadcrumb">${t('shell.workspace')} <span>/</span> ${t('nav.'+route())}</span><div class="header-tools"><span class="private-status"><i></i>${t('shell.private')}</span><div class="language-switch" role="group" aria-label="${t('settings.language')}">${Object.entries(languageNames).map(([locale,name])=>`<button type="button" data-language="${locale}" lang="${locale}" aria-pressed="${locale===language}" class="${locale===language?'active':''}">${name}</button>`).join('')}</div></div>`;
@@ -64,7 +64,7 @@ function pageTitle(page, eyebrow, description) {
 function home() {
   return `<section class="hero"><div class="eyebrow"><i></i>${t('home.eyebrow')}</div><h1>MindClone</h1><h2>${t('home.headline')}</h2><p class="hero-copy">${t('home.description')}</p><div class="home-observatory">${brainMarkup(t,{selected:region})}</div><div class="hero-actions">${link('home.talk','clone')}${link('home.build','builder',true)}</div><p class="fine centered">${t('brain.instructions')}</p></section>
     <section class="workflow"><span class="eyebrow">${t('home.process')}</span><h2>${t('home.workflowTitle')}</h2><div class="steps">${['talk','capture','structure','remember','clone'].map((s,i)=>`<div><small>0${i+1}</small><h3>${t('workflow.'+s)}</h3><p>${t('workflow.'+s+'Note')}</p></div>`).join('')}</div></section>
-    <section class="feature-grid"><a class="feature" href="#clone"><span class="tile-icon">◉</span><span class="eyebrow">01 / ${t('nav.clone')}</span><h2>${t('home.cloneTitle')}</h2><p>${t('home.cloneNote')}</p><span class="text-link">${t('home.talk')} ↗</span></a><a class="feature" href="#builder"><span class="tile-icon">◇</span><span class="eyebrow">02 / ${t('nav.builder')}</span><h2>${t('home.builderTitle')}</h2><p>${t('home.builderNote')}</p><span class="text-link">${t('home.build')} ↗</span></a><div class="stage panel"><span class="eyebrow">${t('project.stage')}</span><span class="stage-badge">v0.4</span><h2>${t('project.mvp')}</h2><p>${t('privacy.demo')}</p><small>${t('project.next')}</small></div></section>`;
+    <section class="feature-grid"><a class="feature" href="#clone"><span class="tile-icon">◉</span><span class="eyebrow">01 / ${t('nav.clone')}</span><h2>${t('home.cloneTitle')}</h2><p>${t('home.cloneNote')}</p><span class="text-link">${t('home.talk')} ↗</span></a><a class="feature" href="#builder"><span class="tile-icon">◇</span><span class="eyebrow">02 / ${t('nav.builder')}</span><h2>${t('home.builderTitle')}</h2><p>${t('home.builderNote')}</p><span class="text-link">${t('home.build')} ↗</span></a><div class="stage panel"><span class="eyebrow">${t('project.stage')}</span><span class="stage-badge">v0.5</span><h2>${t('project.mvp')}</h2><p>${t('privacy.demo')}</p><small>${t('project.next')}</small></div></section>`;
 }
 function conversation() {
   const log = messages.length ? messages.map(m=>m.role==='user'?`<div class="user-message">${escape(m.text)}</div>`:`<article class="clone-message"><span class="avatar">m</span><div><small>MindClone · ${t('shell.demo')}</small><p>${t(m.reply.answer_key)}</p><div class="evidence"><div><small>${t('clone.memories')}</small><span>${m.reply.memories.length?t('clone.memoryTitle')+' · '+t('shell.demo'):t('clone.none')}</span></div><div><small>${t('clone.source')}</small><span>${m.reply.source||t('clone.none')}</span></div><div><small>${t('clone.confidence')}</small><span>${t('clone.unknown')}</span></div></div><details><summary>${t('clone.why')}</summary><p>${t(m.reply.why_key)}</p></details></div></article>`).join('') : `<div class="chat-empty"><span class="chat-core" aria-hidden="true">◉</span><h2>${t('clone.emptyTitle')}</h2><p>${t('clone.emptyNote')}</p><button class="suggestion" id="sample-chat">${t('clone.sample')} ↗</button></div>`;
@@ -122,7 +122,7 @@ function bind() {
       const reply=await core.chat(query);
       messages.push({role:'user',text:query},{role:'assistant',reply});
       pulse=reply.regions;
-      if(pulse.length)region=pulse[0];
+
     } catch { notification='error.generic'; }
     finally {busy=false;render();}
     app.querySelector('#query')?.focus({preventScroll:true});

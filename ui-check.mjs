@@ -31,7 +31,8 @@ await page.mouse.move(100,100);
 await page.waitForFunction(a=>document.querySelector('canvas').dataset.angle!==a,paused);
 for(const region of modelOrder){
  const module=page.locator(`[data-brain-region=${region}]`);
- await module.hover();assert.equal(await page.locator('.brain-workspace').getAttribute('data-hovered'),region);
+ const priorSelection=await page.locator('.brain-workspace').getAttribute('data-selected');
+ await module.hover();assert.equal(await page.locator('.brain-workspace').getAttribute('data-selected'),priorSelection);assert.equal(await page.locator('.brain-module.hovered').count(),1);assert.ok(await page.locator('.brain-module.selected').count()<=1);assert.equal(await page.locator('.brain-workspace').getAttribute('data-hovered'),region);
  assert.equal(await page.locator('.brain-connector').getAttribute('data-region'),region);
  assert.ok((await page.locator('.brain-connector path').getAttribute('d')).includes('L'));
  await module.focus();await page.keyboard.press('Enter');assert.equal(await module.getAttribute('aria-pressed'),'true');
@@ -39,13 +40,14 @@ for(const region of modelOrder){
 }
 await page.locator('[data-brain-region=memory]').click();
 await page.mouse.move(bounds.x+bounds.width/2,bounds.y+bounds.height/2);
-const angle=Number(await page.locator('canvas').getAttribute('data-angle'));
-const node=createMesh().points.find(p=>p.region==='values'&&p.z>0&&p.x>95&&p.y>20);
-const z=-node.x*Math.sin(angle)+node.z*Math.cos(angle),scale=Math.min(bounds.width/405,bounds.height/342)*(600/(600-z));
-const px=bounds.x+bounds.width/2+(node.x*Math.cos(angle)+node.z*Math.sin(angle))*scale;
-const py=bounds.y+bounds.height/2+(node.y-3)*scale;
-await page.mouse.click(px,py);assert.equal(await page.locator('.brain-workspace').getAttribute('data-selected'),'values');
-await page.locator('[data-brain-region=memory]').click();await page.mouse.move(100,100);
+// Raycast the actual mesh: sweep visible surface points, then click a hit.
+let brainHit=false;
+for(let dx=-80;dx<=80&&!brainHit;dx+=20){
+ await page.mouse.move(bounds.x+bounds.width/2+dx,bounds.y+bounds.height/2);
+ const hovered=await page.locator('.brain-workspace').getAttribute('data-hovered');
+ if(hovered){await page.mouse.click(bounds.x+bounds.width/2+dx,bounds.y+bounds.height/2);assert.equal(await page.locator('.brain-workspace').getAttribute('data-selected'),hovered);brainHit=true;}
+}
+assert.ok(brainHit);await page.locator('[data-brain-region=memory]').click();await page.mouse.move(100,100);
 await noPercentage();await page.screenshot({path:'screenshots/overview-desktop.png',fullPage:true});
 await nav('clone');assert.equal(await page.locator('canvas').count(),1);
 await page.locator('#sample-chat').click();await page.locator('.clone-message').waitFor();

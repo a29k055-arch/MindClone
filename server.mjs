@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
-const allowed = /^\/(index\.html|styles\.css|src\/[a-z0-9-]+\.js|locales\/(en|zh|ja)\.json)$/;
+const allowed = /^\/(index\.html|styles\.css|src\/[a-z0-9-]+\.js|vendor\/three\.(module|core)\.js|locales\/(en|zh|ja)\.json)$/;
 const mime = {'.js':'text/javascript', '.css':'text/css', '.html':'text/html', '.json':'application/json'};
 const server = http.createServer(async (req, res) => {
   const pathname = new URL(req.url, 'http://localhost').pathname;

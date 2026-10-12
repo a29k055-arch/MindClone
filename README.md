@@ -1,4 +1,6 @@
 # MindClone
+
+**Live Demo / 在线体验 — [Open MindClone](https://a29k055-arch.github.io/MindClone/)**
 ### 思维克隆 · 数字生命计划
 
 **Preserve a human mind as data.**
@@ -7,14 +9,14 @@
 
 **Local-first · Cloud-assisted · Model-independent**
 
-> Private Research Prototype · v0.4 · Local execution only
+> Research Prototype · v0.5 · Public static demo
 
 ![Digital Brain overview](screenshots/overview-desktop.png)
 
 ## What is MindClone?
 MindClone is a long-term digital persona research project. It preserves original words, memories, values, opinions, language, and reasoning with sources and context. Its aim is a portable archive that can support an evidence-aware digital self over time, without depending on one model or platform.
 
-思维克隆关注一个人经历了什么、如何做决定、为什么改变，而不只是模仿说话语气。这个原型供获邀的老师、同学和研究合作者体验流程；它不声称已经复制意识或形成真实人格。
+思维克隆关注一个人经历了什么、如何做决定、为什么改变，而不只是模仿说话语气。这个公开原型供老师、同学和研究合作者体验流程；它不声称已经复制意识或形成真实人格。
 
 ## Why?
 A conversation can disappear and a model can change. Human stories and ways of thinking deserve a durable, revisable archive. Original answers remain distinct from AI analysis; missing evidence remains visible rather than being invented.
@@ -37,9 +39,9 @@ Start Interview → scripted AI question → original answer → follow-up → E
 Captured answers, generated sessions and fragments accumulate as counts. There is no percentage, completion bar or lifetime target. Exact fictional samples still provide illustrative source-based counts; arbitrary answers remain raw and unconfirmed. Verified archive counts remain zero.
 
 ## Digital Brain UI
-All three pages use the same abstract lateral/cross-section brain model: original silhouette, triangulated points, edges and translucent faces. Canvas 2D projects a real XYZ mesh with perspective and depth ordering; SVG draws one restrained folded connector to the selected or hovered left-side module. No Three.js, WebGL, downloaded image or external model is required.
+All three pages share a genuine closed 3D brain mesh generated from an original implicit volume with marching tetrahedra. Cerebrum, cerebellum and brainstem form one connected surface, with a dorsal fissure and subtle cortical deformation. Three.js 0.180.0 (MIT, vendored locally and loaded on demand) renders translucent triangular faces, thin unique edges and vertex points. Desktop: 1,462 vertices / 2,920 faces; mobile: 968 vertices / 1,932 faces. No traced silhouette, extrusion or paired planar sheets are used.
 
-Memory, Personality, Values, Reasoning, Language and Emotion are a single vertical column on the left. Click either a module or the brain surface to select; no region detail, record page or navigation is created. Keyboard buttons and the focused canvas arrow keys provide selection.
+Hover and selection are separate states: hoveredDomain controls one temporary module highlight and connection; selectedDomain alone controls persistent node glow. Hover takes precedence for the single connection; leaving restores the selected connection. SVG endpoints use Vector3.project(camera) from the domain centroid in world space. Memory, Personality, Values, Reasoning, Language and Emotion are a single vertical column on the left. Click either a module or the brain surface to select; no region detail, record page or navigation is created. Keyboard buttons and the focused canvas arrow keys provide selection.
 
 The model rotates slowly around its Y axis. Hover over the brain pauses rotation; leaving resumes at the current angle. Reduced-motion preferences stop rotation while preserving interaction. Mobile uses a smaller mesh, DPR capped at 1 and lower frame frequency; desktop DPR is capped at 1.5. Offscreen and hidden-tab animation stops, and renderer resources are cleaned up when routes change. Fonts use a shared system sans-serif stack; raw file previews retain a readable code font.
 
@@ -85,10 +87,10 @@ My Clone ── Retrieve / Read ──────┘
 Both interfaces share DemoCore. Typed contracts reserve SQLite/PostgreSQL repositories, reviewed Memory API, RAG, LLM Router, AuthSession, AuthPort and server-side AccessPolicy. They are interface boundaries, not active services. See [architecture](docs/ARCHITECTURE.md).
 
 ## Privacy-first, local-first
-- **Repository is Private.** At the visibility audit, only the owner had access; no collaborator invitations were issued. The owner manages future invitations.
+- **Repository is Public.** Only reviewed code, docs and synthetic samples are published. No invitations are needed to view this prototype.
 - Repository privacy and website authentication are separate. This local app has no login system yet. Do not expose it on a network or deploy private data behind a frontend-only login screen.
-- GitHub Pages is not configured. We do not assume ordinary Pages restricts visitors to private-repository collaborators. Local demonstration is the current delivery method.
-- Future deployment must enforce server-side identity, an allowlist and authorization for the site **and every Memory API operation**, using an authenticated hosting/access layer. No deployment was performed in this iteration.
+- GitHub Pages serves a public static prototype without login. It contains no real persona or private data service. Local running remains supported.
+- Future deployment must enforce server-side identity, an allowlist and authorization for the site **and every Memory API operation**, using an authenticated hosting/access layer. The current public demo must never receive embedded real private records.
 - Only code, documentation, translation dictionaries and fictional screenshots enter this code repository. A strict Git allowlist still excludes private archives, raw interviews, SQLite, Vault, secrets, environment files and downloaded fragments.
 - No real memory or database enters the frontend bundle. Even a private Git repository is not a Vault.
 - Input remains in page memory; refresh clears it. Only language preference is saved. No analytics or external model requests run. The static server serves reviewed assets on 127.0.0.1 only.
@@ -97,15 +99,15 @@ Both interfaces share DemoCore. Typed contracts reserve SQLite/PostgreSQL reposi
 `MindClone-Private` remains a reserved future data-layer concept. No extra repository or private data publication was created.
 
 ## Current progress
-- [x] Existing public repository changed to Private and owner-only access audited.
+- [x] Public repository and GitHub Pages demo, following code/history privacy review.
 - [x] Minimal Futuristic dark interface, Digital Brain and left-side region selection.
 - [x] Evidence-aware conversation and restrained synthetic-source feedback.
-- [x] Progressive interview mesh, honest capture cumulative records and memory capsule.
+- [x] Shared volumetric interview brain, cumulative capture records and memory capsule.
 - [x] Exact fictional specimen extraction; arbitrary input remains unconfirmed raw capture.
 - [x] Three-language UI, browser locale detection and preference persistence.
 - [x] Keyboard region controls and reduced-motion support.
 - [x] Desktop/mobile screenshots and automated checks.
-- [ ] Server authentication, authorized deployment and Memory API.
+- [ ] Server authentication, private-data deployment and Memory API.
 - [ ] Reviewed real archive ingestion, production ID allocation and database adapter.
 - [ ] Retrieval, model routing and clone evaluation.
 
@@ -147,9 +149,12 @@ All screenshots show fictional samples or zero connected records.
 | ![Progress](screenshots/dashboard-desktop.png) | ![Mobile](screenshots/home-mobile.png) |
 
 ## Inviting a mentor
-The owner can use **Repository → Settings → Collaborators → Add people**. The invited GitHub user can access this private repository **after accepting the invitation**. This does not create authenticated website access. Personal-account repository collaborator permissions include write access; if you require a read-only role, review organization repository roles before inviting.
+The owner can use **Repository → Settings → Collaborators → Add people**. Viewing the public repository and Live Demo requires no invitation. Invite only if collaboration permissions are intended; the invite must be accepted before those permissions apply. This does not create authenticated website access. Personal-account repository collaborator permissions include write access; if you require a read-only role, review organization repository roles before inviting.
 
 [GitHub invitation documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository) · [personal repository permissions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository).
 
 ## Presentation walkthrough
 Overview → select a brain region without navigation → switch language → My Clone → learning sample → unsupported life question → Clone Builder → fictional answers → End Session → Generate Memory Fragment → inspect and export → Persona Progress. Real records remain at zero throughout.
+
+
+Four-angle mesh proofs: [side](screenshots/brain-side.png), [front](screenshots/brain-front.png), [rear](screenshots/brain-rear.png), [opposite](screenshots/brain-opposite.png). These use the same volumetric geometry as the app.

@@ -1,15 +1,14 @@
-# Repository access and deployment — 2026-10-12
+# Access and deployment — 2026-10-13
 
-Repository: a29k055-arch/MindClone. Visibility: Private. Current access audit: owner only. No invitations were sent. Pending invitations: 0.
+Repository: https://github.com/a29k055-arch/MindClone — Public.
+Live Demo: https://a29k055-arch.github.io/MindClone/ — public static GitHub Pages, no login required.
 
-The owner can invite a mentor through Repository → Settings → Collaborators → Add people. Access starts after the invited account accepts. Personal-account collaborators have write permissions; repository privacy alone is not a read-only sharing system or a website login.
+Publishing source: gh-pages branch, root. Only index.html, styles.css, src JavaScript, locales, the MIT Three.js runtime and .nojekyll are deployed. No captured fragments, database, archive, server or credentials enter deployment. Regenerate this branch from reviewed runtime files after changing main.
 
-GitHub Pages is disabled. No release or deployment exists. Do not enable public hosting to work around Private visibility. The MVP runs locally on 127.0.0.1. Future deployment must authenticate and authorize both site visitors and every private API request using a server/access layer. AuthPort and AccessPolicy are reserved interfaces; no production authentication is present.
+The October 13 request supersedes the earlier private repository policy. All tracked history paths and recognizable credential signatures were reviewed before changing visibility. Only source, synthetic samples, documentation and demo screenshots were found. Signature review cannot guarantee detection of every possible secret format. No collaborators were invited.
 
-Prior exposure audit: the earlier Public version tracked only code, documentation and fictional Demo screenshots; no real interview, private memory, persona database, Vault or API key was present in the reviewed files. Fork count at audit: 0; anonymous access after conversion: 404. Converting visibility cannot retract copies someone may already have made; no claim of such copies being absent is possible.
+Entered/imported content stays in this tab's JavaScript memory. It is not transmitted, persisted, indexed or included in deployment. Refresh clears it; only language preference uses localStorage. Use fictional specimens for demonstrations.
 
-Code remains separate from the Local Master Archive. Private repository visibility does not authorize storing real private data here. A default-deny file allowlist and secret/archive exclusions remain active. MINDCLONE_ROOT and existing relative path/migration conventions are unchanged.
+Future real personas require an independent private data layer with server-side authentication and record-level authorization. Public static hosting must never embed real memories, provider credentials or databases. Master Archive and MINDCLONE_ROOT conventions remain unchanged.
 
-References:
-- [Invite a collaborator](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository)
-- [Personal repository roles](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository)
+Viewing requires no invitation. To grant collaboration permissions: Repository → Settings → Collaborators → Add people. Permissions begin after acceptance.

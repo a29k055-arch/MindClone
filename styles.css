@@ -303,3 +303,5 @@ body { font-family: var(--font-sans); }
   .fragment-list .pill { white-space: normal; }
   .capture-totals { gap: 10px 18px; font-size: 10px; }
 }
+
+.brain-module.hovered:not(.selected){border-color:#7195a5;background:#14202b}.brain-module.selected{border-color:#afd6e0;background:#203440}.brain-connector{transition:opacity .12s ease;pointer-events:none}

@@ -1,4 +1,4 @@
-# Default-deny: only reviewed application files may enter this private code repository.
+# Default-deny: only reviewed application files may enter this public code repository.
 *
 !/.gitignore
 !/.gitattributes
@@ -37,3 +37,10 @@
 **/*.key
 **/MC_FRAGMENT_*
 **/node_modules/**
+
+!/vendor/
+!/vendor/three.module.js
+!/vendor/three.core.js
+!/vendor/LICENSE
+!/brain.test.js
+!/angle-check.mjs
