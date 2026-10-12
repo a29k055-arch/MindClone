@@ -1,4 +1,4 @@
-# Default-deny: only reviewed public application files may enter Git.
+# Default-deny: only reviewed application files may enter this private code repository.
 *
 !/.gitignore
 !/.gitattributes
@@ -9,8 +9,14 @@
 !/server.mjs
 !/core.test.js
 !/ui-check.mjs
+!/locales/
+!/locales/*.json
 !/src/
+!/locales/
+!/locales/*.json
 !/src/*.js
+!/locales/
+!/locales/*.json
 !/src/*.d.ts
 !/docs/
 !/docs/*.md

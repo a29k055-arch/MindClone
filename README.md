@@ -3,106 +3,146 @@
 
 **Preserve a human mind as data.**
 
+保存一个人的记忆、思想与人格。 / 記憶・思考・人格を、デジタルに残す。
+
 **Local-first · Cloud-assisted · Model-independent**
 
-![MindClone overview](screenshots/overview-desktop.png)
+> Private Research Prototype · v0.3 · Local execution only
+
+![Digital Brain overview](screenshots/overview-desktop.png)
 
 ## What is MindClone?
-MindClone is an evidence-first digital persona project: a way to preserve the memories, values, opinions, language, and reasoning that shape a person. Its ambition is a portable archive that can support a digital self over time, with clear sources and honest uncertainty.
+MindClone is a long-term digital persona research project. It preserves original words, memories, values, opinions, language, and reasoning with sources and context. Its aim is a portable archive that can support an evidence-aware digital self over time, without depending on one model or platform.
 
-思维克隆希望保存一个人如何经历、如何判断、为何改变，而不只是模仿说话语气。这是面向老师、同学和未来使用者的 Web MVP：可以亲自体验对话、采访与记忆片段的流程。
+思维克隆关注一个人经历了什么、如何做决定、为什么改变，而不只是模仿说话语气。这个原型供获邀的老师、同学和研究合作者体验流程；它不声称已经复制意识或形成真实人格。
 
 ## Why?
-A chat history can disappear. A model can change. Our stories and thinking deserve a durable home independent of either. MindClone begins with original words, preserves their context, and treats personality conclusions as revisable evidence. This prototype does not claim to reproduce a consciousness or a real person.
+A conversation can disappear and a model can change. Human stories and ways of thinking deserve a durable, revisable archive. Original answers remain distinct from AI analysis; missing evidence remains visible rather than being invented.
 
 ## How it works
 **Talk → Capture → Structure → Remember → Clone**
 
 **Raw → Structured → Memory → Persona → Clone**
 
-1. Reflect through a guided interview.
-2. Preserve questions and original answers.
-3. Review candidate memories, values, and reasoning with sources.
-4. Store reviewed evidence in a private persona database.
-5. Answer from authorized evidence; admit when it is missing.
-
-Steps 3–5 are the future architecture. Today the public prototype demonstrates the flow using synthetic fixtures and page-memory capture.
+The local Master Archive remains the source of truth. This Web module is a separately versioned interface under `09_CODE/web`, with no archive access or migration. It demonstrates capture and evidence presentation; real ingestion and retrieval are future work.
 
 ## My Clone
-An interactive demo conversation with Relevant Memories, Source Session, Confidence, and “Why this answer?”. Try **How do you learn?** to see the fictional supported opinion, then **Where was I born?** to see **No reliable memory found**. Matching is intentionally narrow and deterministic. There is no connected LLM or personal archive. Confidence is unknown, not an invented numeric score.
+A Digital Brain sits above the Conversation Layer. Select Memory, Personality, Values, Reasoning, Emotion, or Language to explore a region. Each panel shows zero real records and an honest empty state. Chat answers expose Relevant Memories, Source Session, Confidence, and “Why this answer?”.
+
+Try the supported fictional learning question in any language. Its Memory + Reasoning regions pulse briefly to illustrate a synthetic evidence path. This is visual feedback from a deterministic fixture, **not live retrieval or an LLM**. An unsupported biography question returns **No reliable memory found**. Confidence is unknown; no numeric accuracy is invented.
 
 ## Clone Builder
-Start Interview → scripted AI question → your answer → follow-up → End Session → Generate Memory Fragment.
+Start Interview → scripted AI question → original answer → follow-up → End Session → Generate Memory Fragment.
 
-The five-question demo keeps exact original answers. The end screen shows Questions answered, Memories discovered, Values discovered, Reasoning patterns, and Personality evidence. Discovery counts stay 0 because no reviewed extraction exists. Each question offers a fictional sample answer.
+The neural mesh grows as questions are answered. The percentage measures **Demo capture completion**, not personality completeness. For exact fictional sample answers, illustrative counts accumulate by source question. A complete five-question sample yields a Demo specimen with Memory 2, Values 3, Reasoning 2, Personality 4, and Language 3. Every candidate has a source answer, evidence kind, null confidence, and unconfirmed review status.
 
-Markdown and JSON downloads use `MC_FRAGMENT_YYYYMMDD_F####.md` / `.json`. Current demo files use F0001 and internal DEMO identifiers; **they are not production IDs and must not be automatically imported into the archive**. Repeated downloads may share a suggested filename. Production requires a transactional ID allocator and review. Existing v0.1 archive entity IDs and naming conventions remain unchanged.
+Free-text answers—including a modified sample—are preserved exactly and **are not automatically analyzed**. Their extraction counts remain zero, and export privacy defaults PRIVATE. Both flows leave real archive statistics at zero.
 
-## Persona Progress
-Memory, Personality, Values, Reasoning, and Language coverage; Interview Sessions, Memory Fragments, Recorded Memories, and Opinions. All connected-archive counts are 0. Demo input is not counted as a verified persona.
+## Digital Brain UI
+A lightweight SVG/CSS neural brain, glass layers, fine lines, subtle cyan lighting and restrained motion. Six regions support hover highlighting, click selection and keyboard selection (Tab + Enter or Space). Region panels are available from Overview and My Clone. No external fonts, images, 3D library, WebGL context or particle simulation.
+
+Desktop pointer movement adds slight parallax. Mobile and coarse pointers disable parallax, hide secondary nodes/edges, and use slower motion. System `prefers-reduced-motion` and the Settings switch disable animation. Pointer updates are capped to one per animation frame; there is no continuous JavaScript render loop.
+
+## Three languages
+中文 / English / 日本語 switch instantly without reloading. All core UI copy, questions, sample answers, empty states, privacy text and Markdown headings live in:
+
+```text
+locales/zh.json
+locales/en.json
+locales/ja.json
+```
+
+Default language follows the browser locale, with English fallback. A manual choice saves only `mindclone.language` in localStorage. Switching language preserves unsent drafts, original answers, messages, fragment identity and creation time. Raw text is never translated or rewritten. Generated UI labels and demo replies follow the selected language.
+
+## Neural Memory Capsule
+Fragments appear as a minimal illuminated memory shard, with `MF-000001`, `DEMO-F0001`, interview theme, date, source-derived Demo counts, View and Export actions. Markdown and JSON downloads use:
+
+```text
+MC_FRAGMENT_YYYYMMDD_F0001.md
+MC_FRAGMENT_YYYYMMDD_F0001.json
+```
+
+F0001 and MF-000001 are **demo identifiers**, not production allocation. They do not replace existing v0.1 archive entity IDs. Downloads may share a suggested filename; production requires transactional unique IDs, schema validation, privacy review and an explicit import. Nothing is written to the Master Archive.
 
 ## Architecture
 ```text
-Clone Builder ── write through review ──┐
-                                      ↓
-                                MindClone Core
-                                      ↕
-                                Persona Database
-                                      ↑
-My Clone ── authorized evidence read ──┘
+Clone Builder ── Capture / Write ──┐
+                                  ↓
+                            MindClone Core
+                                  ↕
+                            Persona Database
+                                  ↑
+My Clone ── Retrieve / Read ──────┘
 ```
-Both interfaces currently call the same `DemoCore` adapter. `src/contracts.d.ts` defines the future shared contract; [architecture](docs/ARCHITECTURE.md) describes SQLite/PostgreSQL, retrieval, model routing, authentication, and Memory API boundaries. Node serves static files only. The public code module is independent of the Local Master Archive.
 
-## Privacy philosophy
-Your memories belong to you. The local archive remains the source of truth. Public GitHub contains reviewed code, documentation, and synthetic demo screenshots only. No raw interviews, private memories, `04_PRIVATE`, persona SQLite databases, Vault, passwords, or API keys belong here—even a private Git repository is not a Vault.
+Both interfaces share DemoCore. Typed contracts reserve SQLite/PostgreSQL repositories, reviewed Memory API, RAG, LLM Router, AuthSession, AuthPort and server-side AccessPolicy. They are interface boundaries, not active services. See [architecture](docs/ARCHITECTURE.md).
 
-This MVP sends no interview or chat text to a server. Input is held in page memory only, without localStorage, cookies, analytics, or external fonts. Refresh clears it; navigation within the same page preserves the session. Downloaded fragments contain your entered text and remain your responsibility to store privately. Use fictional examples for presentations.
+## Privacy-first, local-first
+- **Repository is Private.** At the visibility audit, only the owner had access; no collaborator invitations were issued. The owner manages future invitations.
+- Repository privacy and website authentication are separate. This local app has no login system yet. Do not expose it on a network or deploy private data behind a frontend-only login screen.
+- GitHub Pages is not configured. We do not assume ordinary Pages restricts visitors to private-repository collaborators. Local demonstration is the current delivery method.
+- Future deployment must enforce server-side identity, an allowlist and authorization for the site **and every Memory API operation**, using an authenticated hosting/access layer. No deployment was performed in this iteration.
+- Only code, documentation, translation dictionaries and fictional screenshots enter this code repository. A strict Git allowlist still excludes private archives, raw interviews, SQLite, Vault, secrets, environment files and downloaded fragments.
+- No real memory or database enters the frontend bundle. Even a private Git repository is not a Vault.
+- Input remains in page memory; refresh clears it. Only language preference is saved. No analytics or external model requests run. The static server serves reviewed assets on 127.0.0.1 only.
+- Exported files contain entered text. Store them privately. JSON candidates use stable semantic keys; Markdown renders their labels in the chosen language while preserving raw words.
 
-Future data access must enforce identity, ownership, privacy level, and consent on the server; private records never enter a public frontend bundle. Cloud model calls require explicit authorization of the necessary records. SEALED is excluded from AI access; Vault requires a separate protected access layer.
+`MindClone-Private` remains a reserved future data-layer concept. No extra repository or private data publication was created.
 
 ## Current progress
-- [x] Existing local archive reviewed; directory and migration principles preserved.
-- [x] Responsive overview and two core entry points.
-- [x] Evidence-aware demo chat and honest no-record state.
-- [x] Guided interview, end screen, raw-preserving fragment preview and export.
-- [x] Persona dashboard with transparent zero counts.
-- [x] Shared Core adapter contract and privacy boundaries.
-- [x] Public-only Git allowlist, documentation and demo screenshots.
-- [ ] Authenticated Memory API and reviewed archive ingestion.
-- [ ] SQLite/PostgreSQL adapter, RAG and LLM Router.
-- [ ] Clone similarity and memory accuracy evaluation.
+- [x] Existing public repository changed to Private and owner-only access audited.
+- [x] Minimal Futuristic dark interface, Digital Brain and Explore Mind panels.
+- [x] Evidence-aware conversation and restrained synthetic-source feedback.
+- [x] Progressive interview mesh, honest capture progress and memory capsule.
+- [x] Exact fictional specimen extraction; arbitrary input remains unconfirmed raw capture.
+- [x] Three-language UI, browser locale detection and preference persistence.
+- [x] Keyboard region controls and reduced-motion support.
+- [x] Desktop/mobile screenshots and automated checks.
+- [ ] Server authentication, authorized deployment and Memory API.
+- [ ] Reviewed real archive ingestion, production ID allocation and database adapter.
+- [ ] Retrieval, model routing and clone evaluation.
 
 ## Roadmap
-**Now:** a presentable Web prototype and independently versioned public code module.
+**Next:** fragment review, unique identifiers, schema mapping and an authenticated local Memory API. Preserve the central MINDCLONE_ROOT resolver and relative archive paths.
 
-**Next:** review fragments, allocate unique IDs, validate the schema, and implement an authenticated local Memory API that resolves `MINDCLONE_ROOT` centrally and stores relative paths.
+**Then:** identity/ownership checks, an invitation-controlled deployment layer, permission-filtered retrieval and model routing. Repository collaborator status alone must never authorize a record read.
 
-**Later:** permission-filtered retrieval, model-independent routing, historical persona views, and evidence-based evaluation. Fine-tuning, payment systems, full accounts, and archive migrations are outside this MVP.
-
-`MindClone-Private` is a reserved future separation concept; this iteration does not create it or publish private data.
+**Later:** temporal persona views, contradictions, source inspection and memory/persona evaluation. Fine-tuning, payments, full accounts and archive migration remain outside this MVP.
 
 ## Run locally
-Requires Node.js 20 or newer; no package installation is needed.
+Node.js 22 or newer is required for JSON module import attributes. No package installation is needed.
+
 ```sh
 node server.mjs
 ```
-Open http://127.0.0.1:4173. Routes: `#home`, `#clone`, `#builder`, `#dashboard`. The server binds only to the local machine and serves a fixed public asset allowlist.
+
+Open http://127.0.0.1:4173. Routes: `#home`, `#clone`, `#builder`, `#dashboard`, `#settings`. `PORT` can select another local port.
 
 ```sh
 node --test
 ```
-Browser verification uses `ui-check.mjs`, an existing Playwright installation selected through `MC_TEST_DEPENDENCIES`, and Microsoft Edge. See [validation](docs/VALIDATION.md). The production application has no framework or runtime dependencies beyond Node for local serving; static hosting can serve index.html, styles.css, and src/*.js.
+
+Optional browser validation uses an existing Playwright installation and Microsoft Edge. Set `MC_TEST_DEPENDENCIES` to its node_modules directory and `MC_TEST_URL` to the running local server, then run `node ui-check.mjs`. See [validation](docs/VALIDATION.md).
 
 ## Screenshots
-All screenshots use synthetic demo data.
+All screenshots show fictional samples or zero connected records.
 
 | My Clone | Clone Builder |
 |---|---|
 | ![My Clone](screenshots/my-clone-desktop.png) | ![Clone Builder](screenshots/clone-builder-desktop.png) |
 
-| Persona Progress | Mobile overview |
+| 中文 | 日本語 |
 |---|---|
-| ![Dashboard](screenshots/dashboard-desktop.png) | ![Mobile](screenshots/home-mobile.png) |
+| ![Chinese](screenshots/overview-zh.png) | ![Japanese](screenshots/overview-ja.png) |
+
+| Persona Progress | Mobile |
+|---|---|
+| ![Progress](screenshots/dashboard-desktop.png) | ![Mobile](screenshots/home-mobile.png) |
+
+## Inviting a mentor
+The owner can use **Repository → Settings → Collaborators → Add people**. The invited GitHub user can access this private repository **after accepting the invitation**. This does not create authenticated website access. Personal-account repository collaborator permissions include write access; if you require a read-only role, review organization repository roles before inviting.
+
+[GitHub invitation documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository) · [personal repository permissions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository).
 
 ## Presentation walkthrough
-Open Overview → Talk to My Clone → try the learning sample → ask an unsupported biography question → Clone Builder → answer with fictional samples → End Session → generate a fragment → inspect sources and raw words → Persona Progress. A good demo shows both what the system can do and what it cannot honestly claim.
+Overview → select a brain region → switch language → My Clone → learning sample → unsupported life question → Clone Builder → fictional answers → End Session → Generate Memory Fragment → inspect and export → Persona Progress. Real records remain at zero throughout.

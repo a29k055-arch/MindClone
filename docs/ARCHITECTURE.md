@@ -1,30 +1,39 @@
-# Architecture & integration boundaries
+# Architecture & integration boundaries — v0.3
 
-## Implemented
-- `index.html`: accessible application shell and hash navigation.
-- `styles.css`: responsive layout, system fonts, CSS consciousness visual.
-- `src/app.js`: overview, conversation, interview and dashboard views. Untrusted input is escaped before HTML insertion.
-- `src/core.js`: shared asynchronous DemoCore port. No network, persistence, or archive reads.
-- `src/sample-data.js`: explicitly fictional PUBLIC fixture and scripted questions.
-- `src/contracts.d.ts`: evidence, privacy, reply, raw answer and fragment interfaces.
-- `server.mjs`: static local development server, public asset allowlist and restrictive CSP.
+The existing Web module is iterated in place; the Master Archive is unchanged. No database migration, root mapping, indexing or real-data import is performed.
 
-## Planned Core implementations
-The frontend's Core interface will be implemented by an authenticated API client, rather than importing the local archive. Suggested endpoints: POST /v1/clone/replies; POST /v1/interviews; POST /v1/interviews/:id/answers; POST /v1/interviews/:id/close; POST /v1/fragments/:id/review; GET /v1/persona/progress. These are proposals, not running endpoints.
+## Shared core
+Clone Builder captures original questions and answers through MindClone Core. My Clone reads evidence through the same Core interface. DemoCore currently provides deterministic fixtures only. Neither interface imports archive files.
 
-Authentication and authorization run on the server for every operation. A fragment is a candidate package: preserve immutable raw answers, distinguish FACT / SUBJECTIVE_MEMORY / OPINION / AI_ANALYSIS / AI_INFERENCE / UNCONFIRMED, require review, and retain provenance, timestamps, confidence, revisions and privacy. User input defaults PRIVATE. A public demo flag is never authorization to publish user input.
+Modules:
+- `src/app.js`: five routes, conversation, capture, fragment state and locale switching. Untrusted input is escaped before HTML insertion.
+- `src/brain.js`: bounded deterministic SVG mesh, six region controls, local hover/focus illumination, requestAnimationFrame-throttled pointer parallax and short evidence pulse. No WebGL or continuous JS render loop.
+- `src/i18n.js` and `locales/*.json`: all core UI copy, browser detection and optional language preference persistence.
+- `src/sample-data.js`: known fictional interview specimens. Only exact matching full specimens generate illustrative candidates.
+- `src/core.js`: shared demo adapter; free text remains unconfirmed raw capture, real archive progress remains zero.
+- `src/contracts.d.ts`: evidence, fragment, region, locale and Core contracts; future AuthPort and AccessPolicy.
+- `server.mjs`: fixed static asset allowlist, local bind and CSP. Same-origin JSON language imports are allowed; there are no API write endpoints.
 
-Core services: InterviewService, FragmentReviewService, MemoryRepository, EvidenceRetriever, LLMRouter, AccessPolicy, and transactional IdAllocator. SQLite is the initial repository adapter; PostgreSQL and a vector index are later adapters. Retrieval filters ownership and privacy before selecting evidence. Router credentials stay server-side. Provider failure or absent evidence returns an explicit unavailable/no-record response.
+The neural percentage is answered-question completion, never persona accuracy. Synthetic candidate counts use source-answer indexes. Brain highlighting depicts fixture source metadata, not a genuine retrieval pipeline. No anatomical accuracy is claimed.
 
-## Archive integration
-This Web module lives under `09_CODE/web` with its own Git root. The Master Archive is not a Git root for this public project. No existing scripts, database, paths mapping, Master Index, system status, or archived material is changed.
+## Auth and deployment
+Repository visibility is Private. Its collaborator membership controls repository access only. The local app has no authentication, tokens, fake login gate or deployment. GitHub Pages is not configured and is not assumed to restrict website visitors by repository membership.
 
-A future local service resolves the configured MINDCLONE_ROOT from the authoritative root mapping. All entity asset paths are validated relative POSIX paths within that root. No browser-supplied filesystem path is trusted. Root relocation uses the existing migration protocol; a frontend release never migrates a database.
+A future authenticated API adapter replaces DemoCore. Suggested endpoint boundaries: POST /v1/clone/replies; POST /v1/interviews; POST /v1/interviews/:id/answers; POST /v1/interviews/:id/close; POST /v1/fragments/:id/review; GET /v1/persona/progress. These endpoints do not run yet.
 
-The new fragment download naming convention is an interchange proposal, not a replacement for v0.1 MC_MEM or MC_INT naming and six-digit entity IDs. Demo F0001 is not safe for production allocation. Explicit schema mapping, unique IDs, privacy review and an import transaction are required before any archive write.
+Deploy only after choosing an authentication-capable hosting/access layer. Authenticate identity server-side, authorize each operation and record by owner/privacy/consent, and protect both frontend access and the Memory API. Reject missing/expired sessions before any retrieval or write. Do not embed provider keys, databases or private records in static assets. A UI badge or browser state never establishes security.
 
-## Public/private separation
-Public: frontend, interfaces, reviewed docs, synthetic fixtures and screenshots.
-Private: identity, persona records, original interviews, archive paths and databases behind access control. `MindClone-Private` is reserved in the architecture only. Vault encryption, short-lived authorization and SEALED exclusion require separate implementation.
+Core services remain: InterviewService, FragmentReviewService, MemoryRepository, EvidenceRetriever, LLMRouter, AccessPolicy and transactional IdAllocator. SQLite first; PostgreSQL/vector index later. Filter privacy and ownership before retrieval. SEALED excludes AI access; Vault requires separate protected access and encryption. Model calls need authorization for the minimal selected records.
 
-No fine-tuning, complete RAG, payments or full account system in this version.
+## Schema and provenance
+RawAnswer preserves question, answer and original locale. Locale changes never rewrite stored text. CandidateEvidence distinguishes SUBJECTIVE_MEMORY, AI_ANALYSIS and AI_INFERENCE with source_answer, null confidence and demo:true. All generated fragments are UNCONFIRMED. Any edited or partial specimen receives no extraction. A caller-supplied synthetic flag is ignored.
+
+Fragment interchange naming remains MC_FRAGMENT_YYYYMMDD_F####.md/.json. Demo F0001 and MF-000001 do not replace v0.1 archive IDs or naming. Review, unique transactional allocation, privacy validation, versioning and explicit import are prerequisites for archive writing. Markdown presents labels in the selected language; JSON retains semantic keys plus original text.
+
+## Archive paths
+The module retains its own Git root under 09_CODE/web. The future local service resolves MINDCLONE_ROOT from the authoritative mapping and validates relative POSIX paths within it. No browser-provided filesystem path is trusted. Moving the archive follows the existing migration protocol. This release does not change archive system status or path mappings.
+
+## Data boundary
+This private code repository contains code, docs, translations and synthetic screenshots. Real persona, identity, interviews, SQLite and Vault remain in a separate protected data layer. Private Git is not a Vault. Git's default-deny allowlist remains active, excluding exported fragments and secrets.
+
+Page memory holds demo input only. Refresh clears it; hash navigation and language changes preserve it for the current session. localStorage holds language preference only, never interviews. Reduce-motion choice is session-only and system preferences are always respected.

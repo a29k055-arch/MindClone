@@ -1,4 +1,22 @@
-/** Synthetic public fixture. Never import the Master Archive into this module. */
-export const memory={memory_id:'DEMO-M001',title:'Learning by making',event:'I learn best by building a small prototype and reflecting on what did not work.',source_session:'DEMO-S001',confidence:null,privacy_level:'PUBLIC',kind:'OPINION',demo:true};
-export const questions=['Think of a small project you enjoyed. What made it meaningful to you?','Why did that matter? What did you choose to prioritize?','What trade-off did you make, and what would you change next time?','What evidence could make you reconsider that decision?','How has your perspective changed over time?'];
-export const sampleAnswers=['I enjoyed building a fictional garden planner. Making something useful mattered to me.','I prioritized learning through a small working prototype.','I chose a simple design over extra features so I could test it sooner.','Feedback from someone using it would help me reconsider.','I now ask for feedback earlier. This is a fictional demonstration.'];
+import { dictionaries } from './i18n.js';
+
+/** Fictional fixture only. Never import the Master Archive into the application. */
+export const memory = {
+  memory_id: 'DEMO-M001', title: 'Learning by making',
+  event: dictionaries.en['clone.memoryQuote'], source_session: 'DEMO-S001',
+  confidence: null, privacy_level: 'PUBLIC', kind: 'OPINION', demo: true,
+};
+export const questions = Array.from({length: 5}, (_, i) => dictionaries.en[`question.${i}`]);
+export const sampleAnswers = Array.from({length: 5}, (_, i) => dictionaries.en[`sample.${i}`]);
+export function isExactSample(answer, index) {
+  const d = dictionaries[answer.locale || 'en'];
+  return Boolean(d && index < 5 && answer.question === d[`question.${index}`] && answer.answer === d[`sample.${index}`]);
+}
+// The specimen illustrates extraction; it never runs on arbitrary user text.
+export const specimen = {
+  candidate_memories: [0, 1].map(i => ({key: `evidence.memory${i}`, source_answer: i === 0 ? 0 : 4, kind: 'SUBJECTIVE_MEMORY', confidence: null, demo: true})),
+  values: [0, 1, 2].map(i => ({key: `evidence.values${i}`, source_answer: i, kind: 'AI_ANALYSIS', confidence: null, demo: true})),
+  reasoning_patterns: [0, 1].map(i => ({key: `evidence.reasoning${i}`, source_answer: i === 0 ? 2 : 3, kind: 'AI_ANALYSIS', confidence: null, demo: true})),
+  personality_evidence: [0, 1, 2, 3].map(i => ({key: `evidence.personality${i}`, source_answer: i, kind: 'AI_INFERENCE', confidence: null, demo: true})),
+  language_features: [0, 1, 2].map(i => ({key: `evidence.language${i}`, source_answer: i === 0 ? 0 : i === 1 ? 2 : 4, kind: 'AI_ANALYSIS', confidence: null, demo: true})),
+};
