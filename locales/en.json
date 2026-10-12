@@ -222,5 +222,6 @@
   "metrics.workspaceNote": "These counts accumulate in the current local session. Imported files await review and do not become verified memories.",
   "metrics.sessionOnly": "Current local session",
   "metrics.demoEvidence": "DEMO EVIDENCE TOTALS",
-  "metrics.demoOnly": "Fictional sample only · no inference from imports"
+  "metrics.demoOnly": "Fictional sample only · no inference from imports",
+  "brain.preview": "Preview"
 }

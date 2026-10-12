@@ -222,5 +222,6 @@
   "metrics.workspaceNote": "件数は現在のローカルセッション内で累積します。取り込んだファイルは確認待ちで、検証済みの記憶にはなりません。",
   "metrics.sessionOnly": "現在のローカルセッション",
   "metrics.demoEvidence": "デモの根拠の累計",
-  "metrics.demoOnly": "架空のサンプルのみ · 取り込み内容からの推論なし"
+  "metrics.demoOnly": "架空のサンプルのみ · 取り込み内容からの推論なし",
+  "brain.preview": "プレビュー"
 }

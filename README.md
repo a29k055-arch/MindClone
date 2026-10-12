@@ -9,7 +9,7 @@
 
 **Local-first · Cloud-assisted · Model-independent**
 
-> Research Prototype · v0.5 · Public static demo
+> Research Prototype · v0.6 · Public static demo
 
 ![Digital Brain overview](screenshots/overview-desktop.png)
 
@@ -39,7 +39,7 @@ Start Interview → scripted AI question → original answer → follow-up → E
 Captured answers, generated sessions and fragments accumulate as counts. There is no percentage, completion bar or lifetime target. Exact fictional samples still provide illustrative source-based counts; arbitrary answers remain raw and unconfirmed. Verified archive counts remain zero.
 
 ## Digital Brain UI
-All three pages share a genuine closed 3D brain mesh generated from an original implicit volume with marching tetrahedra. Cerebrum, cerebellum and brainstem form one connected surface, with a dorsal fissure and subtle cortical deformation. Three.js 0.180.0 (MIT, vendored locally and loaded on demand) renders translucent triangular faces, thin unique edges and vertex points. Desktop: 1,462 vertices / 2,920 faces; mobile: 968 vertices / 1,932 faces. No traced silhouette, extrusion or paired planar sheets are used.
+All three pages share a genuine closed 3D brain mesh generated from an original implicit volume with marching tetrahedra. Cerebrum, cerebellum and brainstem form one connected surface, with a dorsal fissure and subtle cortical deformation. Three.js 0.180.0 (MIT, vendored locally and loaded on demand) renders translucent triangular faces, thin unique edges and vertex points. Desktop: 506 vertices / 1,008 faces; mobile: 338 vertices / 672 faces. No traced silhouette, extrusion or paired planar sheets are used.
 
 Hover and selection are separate states: hoveredDomain controls one temporary module highlight and connection; selectedDomain alone controls persistent node glow. Hover takes precedence for the single connection; leaving restores the selected connection. SVG endpoints use Vector3.project(camera) from the domain centroid in world space. Memory, Personality, Values, Reasoning, Language and Emotion are a single vertical column on the left. Click either a module or the brain surface to select; no region detail, record page or navigation is created. Keyboard buttons and the focused canvas arrow keys provide selection.
 
@@ -158,3 +158,6 @@ Overview → select a brain region without navigation → switch language → My
 
 
 Four-angle mesh proofs: [side](screenshots/brain-side.png), [front](screenshots/brain-front.png), [rear](screenshots/brain-rear.png), [opposite](screenshots/brain-opposite.png). These use the same volumetric geometry as the app.
+
+### v0.6 layout update
+Overview retains the central brain with a right-side Explore Mind / Explore records panel. My Clone places conversation first, followed by the shared brain and exploration panel. Clone Builder orders interview → tab-local fragment upload/list → brain and exploration. The panel follows click selection and shows zero verified records; its records action opens an inline empty state without a new route. Smaller screens stack the exploration panel below the brain. Further coarsening exposes the triangular facets while retaining the closed volumetric mesh and all interactions.

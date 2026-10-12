@@ -1,4 +1,4 @@
-# Architecture & integration boundaries — v0.5
+# Architecture & integration boundaries — v0.6
 
 The existing Web module is iterated in place; the Master Archive is unchanged. No database migration, root mapping, indexing or real-data import is performed.
 
@@ -43,5 +43,5 @@ DemoCore importFragment accepts filename and original text in page memory only. 
 getWorkspaceSummary distinguishes locally generated sessions/fragments/imports and fictional Demo candidate counts from getProgress's zero verified archive metrics. Language changes and hash routes preserve session state; refresh clears it. No upload POST endpoint exists. FragmentIngestPort reserves staging, review and authenticated persistence; it is not implemented. No archive/database/root mapping or other project is changed.
 
 
-## Volumetric brain — v0.5
-Original implicit volume → marching tetrahedra → welded closed indexed mesh → Three.js Mesh / LineSegments / Points. Desktop 1462 vertices / 2920 faces; mobile 968 / 1932. Lazy runtime import, DPR clamp and reduced-motion/offscreen cleanup. hoveredDomain and selectedDomain remain separate; only selection changes point shader attributes. Raycasting picks actual mesh faces, while a projected domain centroid controls the single SVG connector.
+## Volumetric brain — v0.6
+Original implicit volume → marching tetrahedra → welded closed indexed mesh → Three.js Mesh / LineSegments / Points. Desktop 506 vertices / 1008 faces; mobile 338 / 672. Lazy runtime import, DPR clamp and reduced-motion/offscreen cleanup. hoveredDomain and selectedDomain remain separate; only selection changes point shader attributes. Raycasting picks actual mesh faces, while a projected domain centroid controls the single SVG connector.

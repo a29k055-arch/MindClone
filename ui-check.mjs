@@ -15,6 +15,8 @@ const nav=async route=>{await page.locator(`nav a[data-page=${route}]`).click();
 const noPercentage=async()=>{assert.ok(!/\d\s*[%％]/.test(await page.locator('#app').innerText()));assert.equal(await page.locator('progress,[role=progressbar]').count(),0);};
 await page.goto(base);await page.locator('canvas').waitFor();
 assert.equal(await page.locator('.brain-module').count(),6);
+const brainBox=await page.locator('.neural-observatory').boundingBox();const exploreBox=await page.locator('.explore-panel').boundingBox();assert.ok(exploreBox.x>=brainBox.x+brainBox.width);
+await page.locator('#explore-records').click();await page.locator('#domain-records').waitFor({state:'visible'});assert.ok((await page.locator('#domain-records').innerText()).includes(dictionaries.en['brain.empty']));assert.equal(new URL(page.url()).hash,'');await page.locator('#explore-records').click();
 const modelOrder=await page.locator('.brain-module').evaluateAll(a=>a.map(e=>e.dataset.brainRegion));
 assert.deepEqual(modelOrder,['memory','personality','values','reasoning','language','emotion']);
 await page.mouse.move(100,100);
@@ -36,7 +38,7 @@ for(const region of modelOrder){
  assert.equal(await page.locator('.brain-connector').getAttribute('data-region'),region);
  assert.ok((await page.locator('.brain-connector path').getAttribute('d')).includes('L'));
  await module.focus();await page.keyboard.press('Enter');assert.equal(await module.getAttribute('aria-pressed'),'true');
- assert.equal(await page.locator('.region-panel,#explore-records').count(),0);assert.equal(new URL(page.url()).hash,'');
+ assert.equal(await page.locator('.explore-panel').count(),1);assert.equal(await page.locator('.explore-panel h2').innerText(),dictionaries.en['region.'+region]);assert.equal(new URL(page.url()).hash,'');
 }
 await page.locator('[data-brain-region=memory]').click();
 await page.mouse.move(bounds.x+bounds.width/2,bounds.y+bounds.height/2);
@@ -49,14 +51,14 @@ for(let dx=-80;dx<=80&&!brainHit;dx+=20){
 }
 assert.ok(brainHit);await page.locator('[data-brain-region=memory]').click();await page.mouse.move(100,100);
 await noPercentage();await page.screenshot({path:'screenshots/overview-desktop.png',fullPage:true});
-await nav('clone');assert.equal(await page.locator('canvas').count(),1);
+await nav('clone');assert.ok(await page.locator('.chat').evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('.clone-observatory'))&Node.DOCUMENT_POSITION_FOLLOWING)));assert.equal(await page.locator('canvas').count(),1);
 await page.locator('#sample-chat').click();await page.locator('.clone-message').waitFor();
 await page.locator('#query').fill('Where was I born?');await page.locator('#chat-form').evaluate(e=>e.requestSubmit());await page.locator('.clone-message').nth(1).waitFor();
 assert.ok((await page.locator('.clone-message').nth(1).innerText()).includes('No reliable memory found'));
 await page.locator('#query').blur();await page.evaluate(()=>window.scrollTo(0,0));await noPercentage();
 await page.screenshot({path:'screenshots/my-clone-desktop.png',fullPage:true});
-await nav('builder');assert.equal(await page.locator('canvas').count(),1);await page.locator('#fragment-files').waitFor({state:'attached'});
-await page.locator('#start').click();await page.locator('#answer').fill('Draft retained');await page.locator('[data-language=ja]').click();assert.equal(await page.locator('#answer').inputValue(),'Draft retained');await page.locator('[data-language=en]').click();
+await nav('builder');assert.ok(await page.locator('.interview').evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('.upload-panel'))&Node.DOCUMENT_POSITION_FOLLOWING)));assert.ok(await page.locator('.upload-panel').evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('.builder-observatory'))&Node.DOCUMENT_POSITION_FOLLOWING)));assert.equal(await page.locator('canvas').count(),1);await page.locator('#fragment-files').waitFor({state:'attached'});
+await page.screenshot({path:'screenshots/clone-builder-ready-desktop.png',fullPage:true});await page.locator('#start').click();await page.locator('#answer').fill('Draft retained');await page.locator('[data-language=ja]').click();assert.equal(await page.locator('#answer').inputValue(),'Draft retained');await page.locator('[data-language=en]').click();
 for(let i=0;i<5;i++){await page.locator('#sample-answer').click();await page.locator('#answer-form').evaluate(e=>e.requestSubmit());await page.waitForFunction(n=>document.querySelector('.capture-totals strong')?.textContent===String(n),i+1);}
 await page.locator('#end').click();await page.locator('#generate').click();await page.locator('.memory-capsule').waitFor();
 assert.deepEqual(await page.locator('.shard-counts b').allTextContents(),['2','3','2','4','3']);
