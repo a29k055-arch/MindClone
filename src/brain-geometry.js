@@ -34,5 +34,7 @@ export function createMesh(coarse=false) {
     }
   }
   const unique=new Set();for(const f of faces)for(let i=0;i<3;i++){const a=f[i],b=f[(i+1)%3],key=[Math.min(a,b),Math.max(a,b)].join(',');if(!unique.has(key)){unique.add(key);edges.push([a,b]);}}
+  // Keep topology and domain membership; gently broaden the lateral silhouette.
+  points.forEach(p=>{p.x*=1.12;p.y*=.90;});
   return {points,faces,edges};
 }

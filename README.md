@@ -54,7 +54,7 @@ locales/en.json
 locales/ja.json
 ```
 
-Default language follows the browser locale, with English fallback. A manual choice saves only `mindclone.language` in localStorage. Switching language preserves unsent drafts, original answers, messages, fragment identity and creation time. Raw text is never translated or rewritten. Generated UI labels and demo replies follow the selected language.
+First visits default to Japanese. Both language switchers use 日本語 / 中文 / English order; a valid saved preference takes precedence. A manual choice saves only `mindclone.language` in localStorage. Switching language preserves unsent drafts, original answers, messages, fragment identity and creation time. Raw text is never translated or rewritten. Generated UI labels and demo replies follow the selected language.
 
 ## Neural Memory Capsule
 Fragments appear as a minimal illuminated memory shard, with `MF-000001`, `DEMO-F0001`, interview theme, date, source-derived Demo counts, View and Export actions. Markdown and JSON downloads use:
@@ -104,7 +104,7 @@ Both interfaces share DemoCore. Typed contracts reserve SQLite/PostgreSQL reposi
 - [x] Evidence-aware conversation and restrained synthetic-source feedback.
 - [x] Shared volumetric interview brain, cumulative capture records and memory capsule.
 - [x] Exact fictional specimen extraction; arbitrary input remains unconfirmed raw capture.
-- [x] Three-language UI, browser locale detection and preference persistence.
+- [x] Three-language UI, Japanese first-visit default and preference persistence.
 - [x] Keyboard region controls and reduced-motion support.
 - [x] Desktop/mobile screenshots and automated checks.
 - [ ] Server authentication, private-data deployment and Memory API.

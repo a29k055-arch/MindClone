@@ -7,7 +7,7 @@ Clone Builder captures original questions and answers through MindClone Core. My
 
 Modules:
 - `src/app.js`: five routes, conversation, capture, fragment state and locale switching. Untrusted input is escaped before HTML insertion.
-- `src/i18n.js` and `locales/*.json`: all core UI copy, browser detection and optional language preference persistence.
+- `src/i18n.js` and `locales/*.json`: all core UI copy, Japanese first-visit default and optional language preference persistence.
 - `src/sample-data.js`: known fictional interview specimens. Only exact matching full specimens generate illustrative candidates.
 - `src/core.js`: shared demo adapter; free text remains unconfirmed raw capture, real archive progress remains zero.
 - `src/contracts.d.ts`: evidence, fragment, region, locale and Core contracts; future AuthPort and AccessPolicy.

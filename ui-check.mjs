@@ -14,6 +14,13 @@ page.on('request',r=>{if(!r.url().startsWith(base))external.push(r.url());});
 const nav=async route=>{await page.locator(`nav a[data-page=${route}]`).click();await page.waitForFunction(p=>location.hash==='#'+p&&document.querySelector('h1')?.textContent.includes(p==='home'?'MindClone':({clone:'My Clone',builder:'Clone Builder',dashboard:'Persona Progress',settings:'Settings'}[p])),route);};
 const noPercentage=async()=>{assert.ok(!/\d\s*[%％]/.test(await page.locator('#app').innerText()));assert.equal(await page.locator('progress,[role=progressbar]').count(),0);};
 await page.goto(base);await page.locator('canvas').waitFor();
+assert.equal(await page.locator('html').getAttribute('lang'),'ja','fresh visits default to Japanese even with English browser locale');
+assert.deepEqual(await page.locator('[data-language]').allTextContents(),['日本語','中文','English']);
+for(const locale of ['zh','en','ja']){
+ await page.locator(`[data-language=${locale}]`).click();await page.reload();await page.locator('canvas').waitFor();
+ assert.equal(await page.locator('html').getAttribute('lang'),locale==='zh'?'zh-CN':locale,'saved language survives reload');
+}
+await page.locator('[data-language=en]').click();
 assert.equal(await page.locator('.brain-module').count(),6);
 const brainBox=await page.locator('.neural-observatory').boundingBox();const exploreBox=await page.locator('.explore-panel').boundingBox();assert.ok(exploreBox.x>=brainBox.x+brainBox.width);
 await page.locator('#explore-records').click();await page.locator('#domain-records').waitFor({state:'visible'});assert.ok((await page.locator('#domain-records').innerText()).includes(dictionaries.en['brain.empty']));assert.equal(new URL(page.url()).hash,'');await page.locator('#explore-records').click();
@@ -87,7 +94,7 @@ for(const width of [375,390,768,1024,1440]){
   }
  }
 }
-await page.locator('[data-language=en]').click();await nav('settings');await page.locator('#motion-toggle').check();await nav('home');assert.equal(await page.locator('canvas').getAttribute('data-running'),'false');
+await page.locator('[data-language=en]').click();await nav('settings');assert.deepEqual(await page.locator('[data-settings-language]').allTextContents(),['日本語','中文','English']);await page.locator('#motion-toggle').check();await nav('home');assert.equal(await page.locator('canvas').getAttribute('data-running'),'false');
 await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('canvas').getAttribute('data-running'),'false');
 await nav('dashboard');await page.reload();await page.locator('.metrics strong').first().waitFor();assert.deepEqual(await page.locator('.metrics strong').allTextContents(),['0','0','0','0']);
 assert.deepEqual(await page.evaluate(()=>Object.keys(localStorage)),['mindclone.language']);
