@@ -12,11 +12,7 @@
 !/locales/
 !/locales/*.json
 !/src/
-!/locales/
-!/locales/*.json
 !/src/*.js
-!/locales/
-!/locales/*.json
 !/src/*.d.ts
 !/docs/
 !/docs/*.md
