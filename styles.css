@@ -305,3 +305,43 @@ body { font-family: var(--font-sans); }
 }
 
 .brain-module.hovered:not(.selected){border-color:#7195a5;background:#14202b}.brain-module.selected{border-color:#afd6e0;background:#203440}.brain-connector{transition:opacity .12s ease;pointer-events:none}
+
+/* v0.6: main tasks first; shared brain and exploration below. */
+.mind-observatory { display:grid; grid-template-columns:minmax(0,3fr) minmax(235px,1fr); gap:20px; align-items:stretch; }
+.mind-observatory>*, .builder-main { min-width:0; }
+.mind-observatory .brain-workspace { grid-template-columns:132px minmax(0,1fr); padding:20px 16px; gap:8px; }
+.mind-observatory .brain-module { font-size:10px; padding:13px 9px; grid-template-columns:17px minmax(0,1fr) 10px; gap:5px; }
+.explore-panel { text-align:left; }
+.explore-panel .region-body { padding:27px 24px; display:block; }
+.explore-panel .region-number { font-size:10px; letter-spacing:2px; color:#7f9fb3; }
+.explore-panel h2 { font-size:25px; margin:20px 0 9px; }
+.explore-panel .region-body>p { min-height:36px; font-size:11px; }
+.explore-panel .region-total { margin:24px 0; }
+.explore-panel .region-total strong { font-size:45px; }
+.explore-panel .region-body .button { margin-top:15px; justify-content:center; }
+.explore-panel .empty-records[hidden] { display:none; }
+.explore-panel .empty-records p { min-height:0; }
+.clone-observatory, .builder-observatory { margin-top:30px; }
+.conversation-layer { margin-top:0; }
+.builder-layout { margin-bottom:0; }
+@media(max-width:1180px) {
+ .mind-observatory { grid-template-columns:minmax(0,1fr); }
+ .explore-panel .region-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px 24px; }
+ .explore-panel .region-number { grid-column:1/-1; }
+ .explore-panel h2 { grid-column:1; margin:0; }
+ .explore-panel .region-body>p { grid-column:1; grid-row:3; margin:0; }
+ .explore-panel .region-total { grid-column:2; grid-row:2; margin:0; justify-content:flex-end; }
+ .explore-panel dl { grid-column:2; grid-row:3; margin:0; }
+ .explore-panel .region-body .button { grid-column:1; margin-top:5px; }
+ .explore-panel .empty-records { grid-column:1/-1; }
+}
+@media(max-width:700px) {
+ .mind-observatory { gap:14px; }
+ .mind-observatory .brain-workspace { grid-template-columns:104px minmax(0,1fr); padding:12px 10px; gap:2px; }
+ .mind-observatory .brain-module { grid-template-columns:minmax(0,1fr) 10px; padding:11px 8px; font-size:9px; gap:3px; }
+ .explore-panel .region-body { padding:20px 18px; gap:10px 14px; }
+ .explore-panel h2 { font-size:22px; }
+ .explore-panel .region-total strong { font-size:34px; }
+ .clone-observatory, .builder-observatory { margin-top:24px; }
+ .conversation-layer { margin-top:0; }
+}

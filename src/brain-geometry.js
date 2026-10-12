@@ -17,7 +17,7 @@ function field(x,y,z) {
   return union(union(cerebral,ell(-66,-39,0,48,35,49)),ell(-19,-67,0,18,44,20));
 }
 export function createMesh(coarse=false) {
-  const step=coarse?22:18,points=[],faces=[],edges=[],weld=new Map();
+  const step=coarse?36:30,points=[],faces=[],edges=[],weld=new Map();
   const vertex=p=>{const key=p.map(v=>v.toFixed(5)).join(',');if(weld.has(key))return weld.get(key);const i=points.length;points.push({x:p[0],y:p[1],z:p[2],region:domainFor(...p)});weld.set(key,i);return i;};
   const corners=[[0,0,0],[1,0,0],[1,1,0],[0,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1]];
   const tetra=[[0,5,1,6],[0,1,2,6],[0,2,3,6],[0,3,7,6],[0,7,4,6],[0,4,5,6]];
