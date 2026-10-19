@@ -35,13 +35,16 @@ The module retains its own Git root under 09_CODE/web. The future local service 
 ## Data boundary
 This public code repository contains code, docs, translations and synthetic screenshots. Real persona, identity, interviews, SQLite and Vault remain in a separate protected data layer. Private Git is not a Vault. Git's default-deny allowlist remains active, excluding exported fragments and secrets.
 
-Page memory holds demo input only. Refresh clears it; hash navigation and language changes preserve it for the current session. localStorage holds language preference only, never interviews. Reduce-motion choice is session-only and system preferences are always respected.
+Memory-fragment staging remains tab-local. CaptureStore persists raw conversations, interviews, audio and linked transcripts/voice consent in origin-local IndexedDB; refresh does not clear these records. localStorage holds only UI language preference. Reduce-motion choice is session-only and system preferences are always respected.
 
 ## Local fragment staging — v0.4
 DemoCore importFragment accepts filename and original text in page memory only. MD is preserved; JSON syntax and root-object shape are checked without trusting evidence arrays. Every imported entry is PRIVATE/UNREVIEWED, even if the file claims PUBLIC or approved evidence. listFragments omits raw content. The UI lists escaped filenames and source IDs, never renders imported HTML or Markdown. Exact file/text duplicates are not re-added. Per-file and session limits bound memory use.
 
-getWorkspaceSummary distinguishes locally generated sessions/fragments/imports and fictional Demo candidate counts from getProgress's zero verified archive metrics. Language changes and hash routes preserve session state; refresh clears it. No upload POST endpoint exists. FragmentIngestPort reserves staging, review and authenticated persistence; it is not implemented. No archive/database/root mapping or other project is changed.
+getWorkspaceSummary distinguishes locally generated sessions/fragments/imports and fictional Demo candidate counts from getProgress's zero verified archive metrics. Language changes and hash routes preserve session state; refresh clears it. Only the optional loopback ASR proxy accepts audio POSTs; no public Memory API exists. FragmentIngestPort reserves staging, review and authenticated persistence; it is not implemented. No archive/database/root mapping or other project is changed.
 
 
 ## Volumetric brain — v0.6
 Original implicit volume → marching tetrahedra → welded closed indexed mesh → Three.js Mesh / LineSegments / Points. Desktop 506 vertices / 1008 faces; mobile 338 / 672. Lazy runtime import, DPR clamp and reduced-motion/offscreen cleanup. hoveredDomain and selectedDomain remain separate; only selection changes point shader attributes. Raycasting picks actual mesh faces, while a projected domain centroid controls the single SVG connector.
+
+## Builder and speech — v0.7
+CaptureUI composes the three modes and Voice Collection; capture-core.js owns local persistence, language detection, rule-based InterviewEngine, VoiceSampleCollector and cumulative PersonaProgress. audio.js owns AudioRecorder, replaceable SpeechRecognitionAdapter / LocalWhisperAdapter and a disabled VoiceCloneAdapter. services/asr.py provides optional loopback CPU-int8 faster-whisper with consent and language validation. See SPEECH_AND_CAPTURE.md. DigitalBrain is unchanged.

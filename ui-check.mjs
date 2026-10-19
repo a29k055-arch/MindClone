@@ -11,7 +11,7 @@ const page=await browser.newPage({viewport:{width:1440,height:1000},locale:'en-U
 const errors=[],external=[];
 page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
 page.on('request',r=>{if(!r.url().startsWith(base))external.push(r.url());});
-const nav=async route=>{await page.locator(`nav a[data-page=${route}]`).click();await page.waitForFunction(p=>location.hash==='#'+p&&document.querySelector('h1')?.textContent.includes(p==='home'?'MindClone':({clone:'My Clone',builder:'Clone Builder',dashboard:'Persona Progress',settings:'Settings'}[p])),route);};
+const nav=async route=>{await page.locator(route==='settings'?'.settings-link':`nav a[data-page=${route}]`).click();await page.waitForFunction(p=>location.hash==='#'+p&&document.querySelector('h1')?.textContent.includes(p==='home'?'MindClone':({clone:'My Clone',builder:'Clone Builder',dashboard:'Persona Progress',settings:'Settings'}[p])),route);};
 const noPercentage=async()=>{assert.ok(!/\d\s*[%％]/.test(await page.locator('#app').innerText()));assert.equal(await page.locator('progress,[role=progressbar]').count(),0);};
 await page.goto(base);await page.locator('canvas').waitFor();
 assert.equal(await page.locator('html').getAttribute('lang'),'ja','fresh visits default to Japanese even with English browser locale');
@@ -64,7 +64,7 @@ await page.locator('#query').fill('Where was I born?');await page.locator('#chat
 assert.ok((await page.locator('.clone-message').nth(1).innerText()).includes('No reliable memory found'));
 await page.locator('#query').blur();await page.evaluate(()=>window.scrollTo(0,0));await noPercentage();
 await page.screenshot({path:'screenshots/my-clone-desktop.png',fullPage:true});
-await nav('builder');assert.ok(await page.locator('.interview').evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('.upload-panel'))&Node.DOCUMENT_POSITION_FOLLOWING)));assert.ok(await page.locator('.upload-panel').evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('.builder-observatory'))&Node.DOCUMENT_POSITION_FOLLOWING)));assert.equal(await page.locator('canvas').count(),1);await page.locator('#fragment-files').waitFor({state:'attached'});
+await nav('builder');await page.locator('#mode-interview').click();assert.ok(await page.locator('.interview').evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('.upload-panel'))&Node.DOCUMENT_POSITION_FOLLOWING)));assert.ok(await page.locator('.upload-panel').evaluate(e=>!!(e.compareDocumentPosition(document.querySelector('.builder-observatory'))&Node.DOCUMENT_POSITION_FOLLOWING)));assert.equal(await page.locator('canvas').count(),1);await page.locator('#fragment-files').waitFor({state:'attached'});
 await page.screenshot({path:'screenshots/clone-builder-ready-desktop.png',fullPage:true});await page.locator('#start').click();await page.locator('#answer').fill('Draft retained');await page.locator('[data-language=ja]').click();assert.equal(await page.locator('#answer').inputValue(),'Draft retained');await page.locator('[data-language=en]').click();
 for(let i=0;i<5;i++){await page.locator('#sample-answer').click();await page.locator('#answer-form').evaluate(e=>e.requestSubmit());await page.waitForFunction(n=>document.querySelector('.capture-totals strong')?.textContent===String(n),i+1);}
 await page.locator('#end').click();await page.locator('#generate').click();await page.locator('.memory-capsule').waitFor();
@@ -86,7 +86,7 @@ for(const width of [375,390,768,1024,1440]){
  for(const locale of ['en','zh','ja']){
   await page.locator(`[data-language=${locale}]`).click();
   for(const route of ['home','clone','builder','dashboard','settings']){
-   await page.locator(`nav a[data-page=${route}]`).click();await page.waitForFunction(title=>document.querySelector('h1')?.textContent.includes(title),route==='home'?'MindClone':dictionaries[locale]['nav.'+route]);
+   await page.locator(route==='settings'?'.settings-link':`nav a[data-page=${route}]`).click();await page.waitForFunction(title=>document.querySelector('h1')?.textContent.includes(title),route==='home'?'MindClone':dictionaries[locale]['nav.'+route]);
    const dims=await page.evaluate(()=>[document.documentElement.scrollWidth,innerWidth]);assert.ok(dims[0]<=dims[1],`${route}/${locale}/${width} overflow`);await noPercentage();
    if(['home','clone','builder'].includes(route)){assert.equal(await page.locator('.brain-module').count(),6);const positions=await page.locator('.brain-module').evaluateAll(a=>a.map(e=>[e.getBoundingClientRect().left,e.getBoundingClientRect().top]));assert.ok(positions.every(p=>Math.abs(p[0]-positions[0][0])<1));assert.ok(positions.every((p,i)=>!i||p[1]>positions[i-1][1]));if(width<=390)assert.ok(Number(await page.locator('canvas').getAttribute('data-dpr'))<=1);}
    if(width===390&&locale==='zh'&&route!=='settings'){await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:`screenshots/${route}-mobile.png`,fullPage:true});}
@@ -96,7 +96,7 @@ for(const width of [375,390,768,1024,1440]){
 }
 await page.locator('[data-language=en]').click();await nav('settings');assert.deepEqual(await page.locator('[data-settings-language]').allTextContents(),['日本語','中文','English']);await page.locator('#motion-toggle').check();await nav('home');assert.equal(await page.locator('canvas').getAttribute('data-running'),'false');
 await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('canvas').getAttribute('data-running'),'false');
-await nav('dashboard');await page.reload();await page.locator('.metrics strong').first().waitFor();assert.deepEqual(await page.locator('.metrics strong').allTextContents(),['0','0','0','0']);
+await nav('dashboard');await page.reload();await page.locator('.metrics strong').first().waitFor();assert.deepEqual(await page.locator('.metrics strong').allTextContents(),['1','0','0','0']);
 assert.deepEqual(await page.evaluate(()=>Object.keys(localStorage)),['mindclone.language']);
 assert.deepEqual(errors,[]);assert.deepEqual(external,[]);await browser.close();
 console.log('PASS: shared 3D brain, rotation pause/resume, canvas/module selection and connectors, cumulative counts with no percentages, JSON/MD round-trip imports and rejection/duplicates, three languages at five screen sizes, mobile DPR, reduced motion, no external requests or browser errors.');

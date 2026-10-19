@@ -63,3 +63,32 @@ export interface FragmentIngestPort {
   review(id:string): Promise<{status:'UNREVIEWED'|'APPROVED'|'REJECTED'}>;
   persistApproved(id:string, session:AuthSession): Promise<void>;
 }
+export type ConversationLanguage = 'auto' | 'ja' | 'zh' | 'en';
+export interface AudioConsent {
+  consent_for_transcription:boolean;
+  consent_for_persona_analysis:boolean;
+  consent_for_voice_clone:boolean; // always false until explicit authorization
+}
+export interface AudioAsset extends AudioConsent {
+  id:string;kind:'audio_asset';blob:Blob;name:string;duration:number;
+  sample_rate:number|null;decoded_sample_rate?:number;language:ConversationLanguage;
+  source:'conversation'|'voice'|'upload';created_at:string;transcript_id:string|null;privacy_level:'PRIVATE';
+}
+export interface AudioTranscript {
+  id:string;kind:'transcript';audio_asset_id:string;text:string;language:Exclude<ConversationLanguage,'auto'>;
+  source:'manual'|'faster-whisper';created_at:string;reviewed:false;consent_for_persona_analysis:boolean;
+}
+export interface VoiceSample extends AudioConsent {
+  id:string;kind:'voice_sample';audio_asset_id:string;duration:number;
+  language:ConversationLanguage;sample_rate:number|null;transcript_id:string|null;created_at:string;
+}
+export interface SpeechRecognitionAdapter {
+  status():Promise<{available:boolean;engine?:string;auto_detection?:boolean}>;
+  transcribe(asset:AudioAsset,language:ConversationLanguage):Promise<{
+    text:string;language:Exclude<ConversationLanguage,'auto'>;engine:string;task:'transcribe';
+  }>;
+}
+export interface VoiceProfile {id:string;sample_ids:string[];consent_for_voice_clone:boolean;}
+export interface VoiceCloneAdapter {
+  synthesize(profile:VoiceProfile,text:string,language:Exclude<ConversationLanguage,'auto'>):Promise<Blob>;
+}

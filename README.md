@@ -9,9 +9,15 @@
 
 **Local-first · Cloud-assisted · Model-independent**
 
-> Research Prototype · v0.6 · Public static demo
+> Research Prototype · v0.7 · Public static demo
 
 ![Digital Brain overview](screenshots/overview-desktop.png)
+
+## Builder-first · Capture a digital persona
+
+MindClone is a **Clone Builder**, a tool for gradually building a digital persona through conversation, short interviews, recordings, voice references and memory fragments. Start in Clone Builder, inspect cumulative Persona Progress, then experience My Clone. The public prototype does not expose the owner's persona.
+
+**New in v0.7:** default free conversation; explicitly labeled rule-based reflective replies; explicit microphone recording; local faster-whisper multilingual ASR; separate UI/conversation languages; browser-local audio/transcript/consent storage; voice sample collection without training. Public Pages supports capture and manual transcripts; automatic ASR requires the optional local service. [Speech setup, privacy, candidate engines and limitations](docs/SPEECH_AND_CAPTURE.md).
 
 ## What is MindClone?
 MindClone is a long-term digital persona research project. It preserves original words, memories, values, opinions, language, and reasoning with sources and context. Its aim is a portable archive that can support an evidence-aware digital self over time, without depending on one model or platform.
@@ -54,7 +60,7 @@ locales/en.json
 locales/ja.json
 ```
 
-First visits default to Japanese. Both language switchers use 日本語 / 中文 / English order; a valid saved preference takes precedence. A manual choice saves only `mindclone.language` in localStorage. Switching language preserves unsent drafts, original answers, messages, fragment identity and creation time. Raw text is never translated or rewritten. Generated UI labels and demo replies follow the selected language.
+First visits default to Japanese. Both language switchers use 日本語 / 中文 / English order; a valid saved preference takes precedence. A manual choice saves only `mindclone.language` in localStorage. Switching language preserves unsent drafts, original answers, messages, fragment identity and creation time. Raw text is never translated or rewritten. UI labels follow the UI language; conversation replies follow the separate session language.
 
 ## Neural Memory Capsule
 Fragments appear as a minimal illuminated memory shard, with `MF-000001`, `DEMO-F0001`, interview theme, date, source-derived Demo counts, View and Export actions. Markdown and JSON downloads use:
@@ -92,8 +98,8 @@ Both interfaces share DemoCore. Typed contracts reserve SQLite/PostgreSQL reposi
 - GitHub Pages serves a public static prototype without login. It contains no real persona or private data service. Local running remains supported.
 - Future deployment must enforce server-side identity, an allowlist and authorization for the site **and every Memory API operation**, using an authenticated hosting/access layer. The current public demo must never receive embedded real private records.
 - Only code, documentation, translation dictionaries and fictional screenshots enter this code repository. A strict Git allowlist still excludes private archives, raw interviews, SQLite, Vault, secrets, environment files and downloaded fragments.
-- No real memory or database enters the frontend bundle. Even a private Git repository is not a Vault.
-- Input remains in page memory; refresh clears it. Only language preference is saved. No analytics or external model requests run. The static server serves reviewed assets on 127.0.0.1 only.
+- No real memory, user audio or database enters the frontend bundle. Even a private Git repository is not a Vault.
+- Fragment staging remains in page memory. Captured conversations, interviews, audio, transcripts and voice references persist in origin-local IndexedDB. Only UI language preference uses localStorage. No analytics or cloud inference requests run. Optional ASR sends authorized audio only to the loopback service; see the speech privacy guide.
 - Exported files contain entered text. Store them privately. JSON candidates use stable semantic keys; Markdown renders their labels in the chosen language while preserving raw words.
 
 `MindClone-Private` remains a reserved future data-layer concept. No extra repository or private data publication was created.
@@ -119,7 +125,7 @@ Both interfaces share DemoCore. Typed contracts reserve SQLite/PostgreSQL reposi
 **Later:** temporal persona views, contradictions, source inspection and memory/persona evaluation. Fine-tuning, payments, full accounts and archive migration remain outside this MVP.
 
 ## Run locally
-Node.js 22 or newer is required for JSON module import attributes. No package installation is needed.
+Node.js 22 or newer is required for JSON module import attributes. No package installation is needed for the frontend. Optional local ASR has a separate Python environment; see [speech setup](docs/SPEECH_AND_CAPTURE.md).
 
 ```sh
 node server.mjs
@@ -161,3 +167,8 @@ Four-angle mesh proofs: [side](screenshots/brain-side.png), [front](screenshots/
 
 ### v0.6 layout update
 Overview retains the central brain with a right-side Explore Mind / Explore records panel. My Clone places conversation first, followed by the shared brain and exploration panel. Clone Builder orders interview → tab-local fragment upload/list → brain and exploration. The panel follows click selection and shows zero verified records; its records action opens an inline empty state without a new route. Smaller screens stack the exploration panel below the brain. Further coarsening exposes the triangular facets while retaining the closed volumetric mesh and all interactions.
+
+### Voice adapter candidates
+[OpenVoice V2](https://github.com/myshell-ai/OpenVoice) (MIT; preferred future candidate) and [XTTS-v2](https://huggingface.co/coqui/XTTS-v2) (Coqui Public Model License for weights) remain adapters only. Neither model is trained or run in this prototype. No user audio or model checkpoints are committed.
+
+![Clone Builder — free conversation](screenshots/builder-free-desktop.png)
