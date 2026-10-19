@@ -219,7 +219,7 @@
   "metrics.reasoning": "推理模式",
   "metrics.language": "语言信号",
   "metrics.personality": "人格证据",
-  "metrics.workspaceNote": "数量在当前本地会话中累计。导入文件等待审核，不自动成为已验证记忆。",
+  "metrics.workspaceNote": "对话、采访与音频保存在当前浏览器；记忆碎片暂存在当前标签页。导入内容不等于已验证记忆。",
   "metrics.sessionOnly": "当前本地会话",
   "metrics.demoEvidence": "Demo 证据累计",
   "metrics.demoOnly": "仅虚构示例 · 不从导入文件推断",

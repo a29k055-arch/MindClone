@@ -219,7 +219,7 @@
   "metrics.reasoning": "思考パターン",
   "metrics.language": "言語の手がかり",
   "metrics.personality": "人格の根拠",
-  "metrics.workspaceNote": "件数は現在のローカルセッション内で累積します。取り込んだファイルは確認待ちで、検証済みの記憶にはなりません。",
+  "metrics.workspaceNote": "対話・インタビュー・音声はこのブラウザーに保存し、断片はこのタブで一時保管します。取り込んだ内容は確認済みの記憶ではありません。",
   "metrics.sessionOnly": "現在のローカルセッション",
   "metrics.demoEvidence": "デモの根拠の累計",
   "metrics.demoOnly": "架空のサンプルのみ · 取り込み内容からの推論なし",
